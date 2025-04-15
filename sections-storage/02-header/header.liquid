@@ -1,0 +1,369 @@
+{% schema %}
+{
+  "name": "Header",
+  "tag": "section",
+  "class": "site-header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo Width",
+      "default": 140
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky",
+      "label": "Sticky Header",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show Search",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Show Cart",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "main-menu"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header",
+      "blocks": [
+        {
+          "type": "menu"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<header class="site-header {% if section.settings.enable_sticky %}is-sticky{% endif %}" data-header>
+  <div class="container">
+    <div class="header-wrapper">
+      <!-- Mobile Menu Toggle -->
+      <button class="mobile-nav-toggle" aria-label="Menu" data-mobile-toggle>
+        <span class="hamburger"></span>
+      </button>
+
+      <!-- Logo -->
+      <div class="header-logo">
+        <a href="{{ routes.root_url }}" class="logo-link">
+          {% if section.settings.logo %}
+            {{ section.settings.logo | image_url: width: section.settings.logo_width | image_tag:
+              class: 'logo-image',
+              widths: '50, 100, 150, 200, 250',
+              height: section.settings.logo_width | divided_by: 2,
+              alt: shop.name
+            }}
+          {% else %}
+            <span class="h4">{{ shop.name }}</span>
+          {% endif %}
+        </a>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="site-nav" data-navigation>
+        {% for block in section.blocks %}
+          {% if block.type == 'menu' and block.settings.menu != blank %}
+            <ul class="main-menu">
+              {% for link in linklists[block.settings.menu].links %}
+                {% assign child_list_handle = link.title | handleize %}
+                <li class="menu-item {% if link.links != blank %}has-submenu{% endif %}">
+                  <a href="{{ link.url }}" class="menu-link">
+                    {{ link.title }}
+                    {% if link.links != blank %}
+                      <i class="icon icon-chevron-down"></i>
+                    {% endif %}
+                  </a>
+                  {% if link.links != blank %}
+                    <ul class="submenu">
+                      {% for childlink in link.links %}
+                        <li>
+                          <a href="{{ childlink.url }}">{{ childlink.title }}</a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endfor %}
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        {% if section.settings.show_search %}
+          <button class="action-btn search-toggle" aria-label="Search" data-search-toggle>
+            <i class="icon icon-search"></i>
+          </button>
+        {% endif %}
+
+        <a href="{{ routes.account_url }}" class="action-btn" aria-label="Account">
+          <i class="icon icon-user"></i>
+        </a>
+
+        {% if section.settings.show_cart %}
+          <a href="{{ routes.cart_url }}" class="action-btn cart-toggle" aria-label="Cart">
+            <i class="icon icon-cart"></i>
+            <span class="cart-count">{{ cart.item_count }}</span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Search Form -->
+    {% if section.settings.show_search %}
+      <div class="search-container" data-search-container>
+        <form action="{{ routes.search_url }}" method="get" class="search-form">
+          <input type="search" name="q" placeholder="Search..." aria-label="Search">
+          <button type="submit" class="search-submit">
+            <i class="icon icon-search"></i>
+          </button>
+          <button type="button" class="search-close" data-search-close>
+            <i class="icon icon-close"></i>
+          </button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+</header>
+
+{% style %}
+.site-header {
+  background: #fff;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+  position: relative;
+  z-index: 99;
+}
+
+.site-header.is-sticky {
+  position: sticky;
+  top: 0;
+}
+
+.header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.header-logo {
+  flex-shrink: 0;
+}
+
+.logo-image {
+  display: block;
+  width: auto;
+  height: auto;
+}
+
+.site-nav {
+  flex-grow: 1;
+}
+
+.main-menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 20px;
+}
+
+.menu-item {
+  position: relative;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  min-width: 200px;
+  padding: 10px 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: none;
+}
+
+.has-submenu:hover .submenu {
+  display: block;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #000;
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.search-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 20px;
+  display: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.search-form {
+  display: flex;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.search-form input {
+  width: 100%;
+  padding: 10px 40px 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.search-submit {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 5px;
+}
+
+.search-close {
+  position: absolute;
+  right: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 5px;
+}
+
+.mobile-nav-toggle {
+  display: none;
+}
+
+@media screen and (max-width: 991px) {
+  .mobile-nav-toggle {
+    display: block;
+  }
+
+  .site-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+
+  .main-menu {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .submenu {
+    position: static;
+    box-shadow: none;
+    padding-left: 20px;
+  }
+}
+{% endstyle %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Mobile menu toggle
+  const mobileToggle = document.querySelector('[data-mobile-toggle]');
+  const navigation = document.querySelector('[data-navigation]');
+  
+  if (mobileToggle && navigation) {
+    mobileToggle.addEventListener('click', function() {
+      navigation.style.display = navigation.style.display === 'block' ? 'none' : 'block';
+      this.classList.toggle('is-active');
+    });
+  }
+
+  // Search toggle
+  const searchToggle = document.querySelector('[data-search-toggle]');
+  const searchContainer = document.querySelector('[data-search-container]');
+  const searchClose = document.querySelector('[data-search-close]');
+  
+  if (searchToggle && searchContainer && searchClose) {
+    searchToggle.addEventListener('click', function() {
+      searchContainer.style.display = 'block';
+    });
+    
+    searchClose.addEventListener('click', function() {
+      searchContainer.style.display = 'none';
+    });
+  }
+});
+{% endjavascript %} 
