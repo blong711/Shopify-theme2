@@ -1,1 +1,104 @@
- 
+ <!-- Banner Countdown -->
+<div class="flat-spacing-3">
+    <div class="container">
+        <div class="row">
+            {% for block in section.blocks %}
+                <div class="col-lg-6 col-md-12" {{ block.shopify_attributes }}>
+                    <div class="wg-banner style-1 wow fadeInUp">
+                        <div class="image">
+                            {% if block.settings.image != blank %}
+                                <img src="{{ block.settings.image | img_url: 'master' }}"
+                                    data-src="{{ block.settings.image | img_url: 'master' }}" 
+                                    alt="{{ block.settings.image.alt | escape }}" 
+                                    class="lazyload"
+                                    width="{{ block.settings.image.width }}"
+                                    height="{{ block.settings.image.height }}">
+                            {% endif %}
+                        </div>
+                        <div class="content">
+                            <h3 class="title">{{ block.settings.title }}</h3>
+                            <p class="text">{{ block.settings.text }}</p>
+                            <div class="countdown" data-countdown="{{ block.settings.countdown_date }}"></div>
+                            <a href="{{ block.settings.button_link }}" class="tf-btn btn-dark2">{{ block.settings.button_text }}</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- /Banner Countdown -->
+
+{% schema %}
+{
+    "name": "Banner Countdown",
+    "blocks": [
+        {
+            "type": "banner",
+            "name": "Banner",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Banner image"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Smart Watch"
+                },
+                {
+                    "type": "text",
+                    "id": "text",
+                    "label": "Text",
+                    "default": "Up to 50% off"
+                },
+                {
+                    "type": "text",
+                    "id": "countdown_date",
+                    "label": "Countdown date",
+                    "default": "2024/12/31",
+                    "info": "Format: YYYY/MM/DD"
+                },
+                {
+                    "type": "text",
+                    "id": "button_text",
+                    "label": "Button text",
+                    "default": "Shop Now"
+                },
+                {
+                    "type": "url",
+                    "id": "button_link",
+                    "label": "Button link"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Banner Countdown",
+            "blocks": [
+                {
+                    "type": "banner",
+                    "settings": {
+                        "title": "Smart Watch",
+                        "text": "Up to 50% off",
+                        "countdown_date": "2024/12/31",
+                        "button_text": "Shop Now"
+                    }
+                },
+                {
+                    "type": "banner",
+                    "settings": {
+                        "title": "Wireless Earbuds",
+                        "text": "Up to 30% off",
+                        "countdown_date": "2024/12/31",
+                        "button_text": "Shop Now"
+                    }
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

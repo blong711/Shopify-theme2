@@ -1,55 +1,173 @@
-# Prompt for Cursor AI: Convert HTML to Shopify Liquid by Section
+# Header Conversion Guide: Home Electronic to Shopify Liquid
 
-Convert a full HTML page into Shopify Liquid, **section by section**, and document each conversion clearly.
+## 🎯 Objective
+Convert vineta/header-home-electronic.html into a highly customizable Liquid section, precisely identifying all needed settings from the source HTML.
 
-## 📂 Folder Structure
+## 📥 Input & Output
+- Input: vineta/header-home-electronic.html (electronic theme header HTML)
+- Existing Component: sections-storage/02-header/header.liquid (from home1)
+- Output: Header Liquid section with settings derived from input HTML
 
-For each section, create a folder in `vineta/sections-storage/` named:  
-`[order]-[section-name]` (e.g., `01-hero`, `02-features`)
+## 📋 Conversion Process
 
-Inside each folder, include:
+### Step 1: Analyze Input HTML to Identify Settings
+1. Thoroughly examine header-home-electronic.html to identify:
+   - Text content that should become settings
+   - Images that need customization
+   - Links that require adjustment
+   - Repeating elements that could become blocks
+   - Any other dynamic components
 
-### 1. `[section-name].html`
-- The raw HTML for the section.
+2. Create a specific list of required settings:
+   
+   [Create list based on HTML analysis]
+   Example:
+   - Logo (image_picker)
+   - Announcement text (text)
+   - Navigation menu (link_list)
+   - Promotion badge text (text)
+   - Hotline text (text)
+   - Search placeholder (text)
+   - etc.
+   
 
-### 2. `[section-name].liquid`
-- The Shopify Liquid version of the HTML.
-- Follow Shopify section conventions:
-  - Use `{% schema %}` for editable settings.
-  - Use `section.settings` and `section.blocks` properly.
-  - Skip `{% style %}` unless required.
+### Step 2: Structure Schema for the Section
+1. Organize settings into logical groups:
+   
+   {% schema %}
+   {
+     "name": "Header Electronic",
+     "settings": [
+       {
+         "type": "header",
+         "content": "Layout & Logo"
+       },
+       {
+         "type": "select",
+         "id": "layout",
+         "label": "Header Layout",
+         "options": [
+           {"value": "default", "label": "Default"},
+           {"value": "electronic", "label": "Electronic"}
+         ],
+         "default": "electronic"
+       },
+       {
+         "type": "image_picker",
+         "id": "logo",
+         "label": "Logo"
+       },
+       // [Add settings based on HTML analysis]
+       
+       {
+         "type": "header",
+         "content": "Announcement Bar"
+       },
+       {
+         "type": "text",
+         "id": "announcement_text",
+         "label": "Announcement Text",
+         "default": "[Extract default from HTML]"
+       },
+       // [Continue adding settings from analysis]
+     ],
+     "blocks": [
+       // [Define blocks if needed from HTML analysis]
+     ],
+     "presets": [
+       {
+         "name": "Header Electronic",
+         "category": "Header"
+       }
+     ]
+   }
+   {% endschema %}
+   
 
-### 3. `README.md`
-Document the conversion process. Must include:
-- The sentence: **“This Liquid corresponds to this HTML.”**
-- Paths to both files. Example:  
-  `Path to HTML: vineta/sections-storage/01-hero/hero.html`  
-  `Path to Liquid: vineta/sections-storage/01-hero/hero.liquid`
-- What the section does and where it belongs (e.g., homepage).
-- How the HTML was transformed into Liquid (e.g., static text → `{{ settings.title }}`).
-- Any logic or simplification applied.
+### Step 3: Convert HTML to Liquid Using Identified Settings
+1. Replace static text with Liquid variables:
+   
+   <!-- Example from original HTML -->
+   <div class="announcement-text">Free shipping on all orders over $50</div>
+   
+   <!-- Convert to -->
+   <div class="announcement-text">{{ section.settings.announcement_text }}</div>
+   
 
----
+2. Replace static images:
+   
+   <!-- Example from original HTML -->
+   <img src="assets/images/logo.png" alt="Logo">
+   
+   <!-- Convert to -->
+   {% if section.settings.logo %}
+     <img src="{{ section.settings.logo | img_url: '200x' }}" alt="{{ shop.name }}">
+   {% else %}
+     <span>{{ shop.name }}</span>
+   {% endif %}
+   
 
-## 🧱 When Using Blocks
+3. Replace static menus:
+   
+   <!-- Example from original HTML -->
+   <ul class="menu">
+     <li><a href="#">Home</a></li>
+     <li><a href="#">Shop</a></li>
+   </ul>
+   
+   <!-- Convert to -->
+   <ul class="menu">
+     {% for link in linklists[section.settings.menu].links %}
+       <li>
+         <a href="{{ link.url }}">{{ link.title }}</a>
+         {% if link.links != blank %}
+           <!-- Submenu logic -->
+         {% endif %}
+       </li>
+     {% endfor %}
+   </ul>
+   
 
-If the section includes repeated elements (e.g., slides, cards, testimonials):
+### Step 4: Compare with Existing Header
+1. Compare settings from current header (home1) with newly identified settings:
+   - Retain existing settings needed for default layout
+   - Add new settings for electronic layout
+   - Create common settings for both layouts where possible
 
-- Use `blocks` in the schema.
-- Render with `{% for block in section.blocks %}`.
-- Use `block.settings.[id]` and `{{ block.shopify_attributes }}`.
-- Add a `presets` array for default data.
+## 🔍 Comprehensive Checklist
 
----
+Quoc Bao Nguyen, [4/16/2025 11:07 AM]
+1. HTML Analysis
+   - [ ] List all dynamic text to convert to settings
+   - [ ] Identify all images requiring customization
+   - [ ] Identify repeating elements (menus, announcements, etc.)
+   - [ ] Identify special features of the electronic header
 
-## ✅ Guidelines
+2. Create Settings
+   - [ ] Group settings by function
+   - [ ] Set default values from original HTML
+   - [ ] Add descriptions for complex settings
+   - [ ] Determine correct data types for each setting
 
-- Keep code clean and settings well-named (`settings.heading`, `settings.button_link`, etc.).
-- Maintain folder and file naming consistency.
-- Always include detailed notes in `README.md`.
+3. Convert HTML to Liquid
+   - [ ] Replace all static text with setting variables
+   - [ ] Integrate dynamic menus
+   - [ ] Handle images and links
+   - [ ] Add display conditions based on settings
 
----
+4. Integration with Existing Header
+   - [ ] Ensure new settings don't conflict with existing ones
+   - [ ] Create conditional logic based on layout
 
-Repeat this for all sections until the entire HTML is converted.
+5. Testing and Documentation
+   - [ ] Verify all settings work correctly
+   - [ ] Update README with list of new settings
+   - [ ] Describe how to use the electronic layout
 
-This will keep your Shopify theme modular, editable, and well-documented.
+## ✅ Notes
+- Extract all text from HTML to create meaningful settings
+- Name settings clearly and consistently (e.g., announcement_text, hotline_number)
+- Reuse existing settings when possible instead of creating new ones
+- Provide default values from the original HTML so the section works correctly when added
+
+By following this guide, you'll create a highly customizable header section based on detailed analysis of the input HTML, optimizing code reuse from home1 and creating a manageable component.
