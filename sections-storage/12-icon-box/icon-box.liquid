@@ -1,0 +1,174 @@
+{% schema %}
+{
+  "name": "Icon Box",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Slider Settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Slides per view (Mobile)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Slides per view (Tablet)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "label": "Slides per view (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "space_between",
+      "min": 0,
+      "max": 30,
+      "step": 5,
+      "label": "Space between slides",
+      "default": 10
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon_box",
+      "name": "Icon Box",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "icon-shipping",
+              "label": "Shipping"
+            },
+            {
+              "value": "icon-gift",
+              "label": "Gift"
+            },
+            {
+              "value": "icon-return",
+              "label": "Return"
+            },
+            {
+              "value": "icon-support",
+              "label": "Support"
+            }
+          ],
+          "default": "icon-shipping"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Enjoy free shipping on all orders"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icon Box",
+      "category": "Features",
+      "blocks": [
+        {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-shipping",
+            "title": "Free Shipping",
+            "description": "Enjoy free shipping on all orders"
+          }
+        },
+        {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-gift",
+            "title": "Gift Package",
+            "description": "Perfectly packaged for gifting"
+          }
+        },
+        {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-return",
+            "title": "Free Returns",
+            "description": "Within 14 days for a return"
+          }
+        },
+        {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-support",
+            "title": "Support Online",
+            "description": "We support customers 24/7"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<div class="flat-spacing-4">
+    <div class="container">
+        <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+            "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+            "spaceBetween": {{ section.settings.space_between }},
+            "speed": 800,
+            "observer": true,
+            "observeParents": true,
+            "slidesPerGroup": {{ section.settings.slides_per_view_mobile }},
+            "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+            "breakpoints": {
+                "768": { "slidesPerView": {{ section.settings.slides_per_view_tablet }} },
+                "1200": { "slidesPerView": {{ section.settings.slides_per_view_desktop }} }
+            }
+        }'>
+            <div class="swiper-wrapper">
+                {% for block in section.blocks %}
+                    <div class="swiper-slide" {{ block.shopify_attributes }}>
+                        <div class="tf-icon-box style-2">
+                            <div class="box-icon">
+                                <i class="icon {{ block.settings.icon }}"></i>
+                            </div>
+                            <div class="content">
+                                <div class="title">{{ block.settings.title }}</div>
+                                <p class="desc">{{ block.settings.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if section.settings.show_pagination %}
+                <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
+            {% endif %}
+        </div>
+    </div>
+</div> 

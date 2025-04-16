@@ -1,0 +1,157 @@
+{% schema %}
+{
+  "name": "Shop Gram",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Shop by @Gram"
+    },
+    {
+      "type": "header",
+      "content": "Slider Settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Slides per view (Mobile)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Slides per view (Tablet)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "label": "Slides per view (Desktop)",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "space_between",
+      "min": 0,
+      "max": 30,
+      "step": 5,
+      "label": "Space between slides",
+      "default": 10
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "gallery_item",
+      "name": "Gallery Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "product_link",
+          "label": "Product Link"
+        },
+        {
+          "type": "text",
+          "id": "tooltip_text",
+          "label": "Tooltip Text",
+          "default": "View Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop Gram",
+      "category": "Gallery",
+      "blocks": [
+        {
+          "type": "gallery_item"
+        },
+        {
+          "type": "gallery_item"
+        },
+        {
+          "type": "gallery_item"
+        },
+        {
+          "type": "gallery_item"
+        },
+        {
+          "type": "gallery_item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="flat-spacing-4 pt-0">
+    <div class="container">
+        <div class="flat-title wow fadeInUp">
+            <h4 class="title">{{ section.settings.title }}</h4>
+        </div>
+        <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+                "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+                "spaceBetween": {{ section.settings.space_between }},
+                "speed": 800,
+                "observer": true,
+                "observeParents": true,
+                "slidesPerGroup": {{ section.settings.slides_per_view_mobile }},
+                "pagination": { "el": ".sw-pagination-gallery", "clickable": true },
+                "breakpoints": {
+                "768": { "slidesPerView": {{ section.settings.slides_per_view_tablet }} },
+                "1200": { "slidesPerView": {{ section.settings.slides_per_view_desktop }} }
+                }
+            }'>
+            <div class="swiper-wrapper">
+                {% for block in section.blocks %}
+                    <div class="swiper-slide" {{ block.shopify_attributes }}>
+                        <div class="gallery-item hover-img hover-overlay wow fadeInLeft" {% if forloop.index > 1 %}data-wow-delay="{{ forloop.index | minus: 1 | times: 0.1 }}s"{% endif %}>
+                            <div class="image img-style">
+                                {% if block.settings.image != blank %}
+                                    <img src="{{ block.settings.image | img_url: 'master' }}"
+                                        data-src="{{ block.settings.image | img_url: 'master' }}" 
+                                        alt="{{ block.settings.image.alt | escape }}" 
+                                        class="lazyload"
+                                        width="{{ block.settings.image.width }}"
+                                        height="{{ block.settings.image.height }}">
+                                {% else %}
+                                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                {% endif %}
+                            </div>
+                            {% if block.settings.product_link != blank %}
+                                <a href="{{ block.settings.product_link }}" class="box-icon hover-tooltip">
+                                    <span class="icon icon-cart2"></span>
+                                    <span class="tooltip">{{ block.settings.tooltip_text }}</span>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if section.settings.show_pagination %}
+                <span class="d-flex d-xl-none sw-dot-default sw-pagination-gallery justify-content-center"></span>
+            {% endif %}
+        </div>
+    </div>
+</section> 

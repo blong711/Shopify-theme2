@@ -1,0 +1,117 @@
+{% schema %}
+{
+  "name": "Today's Picks",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Today's Picks"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Select a collection to display products from"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8,
+      "label": "Number of products to show"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Today's Picks"
+    }
+  ]
+}
+{% endschema %}
+
+<!-- Today's Picks -->
+<section class="flat-spacing-3 pt-0 overflow-hidden">
+    <div class="container">
+        <div class="flat-title wow fadeInUp">
+            <h4 class="title">{{ section.settings.title }}</h4>
+        </div>
+        <div class="fl-control-sw2 pos2 wow fadeInUp">
+            <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
+                    "slidesPerView": 2,
+                    "spaceBetween": 12,
+                    "speed": 800,
+                    "observer": true,
+                    "observeParents": true,
+                    "slidesPerGroup": 2,
+                    "navigation": {
+                        "clickable": true,
+                        "nextEl": ".nav-next-top-pick",
+                        "prevEl": ".nav-prev-top-pick"
+                    },
+                    "pagination": { "el": ".sw-pagination-top-pick", "clickable": true },
+                    "breakpoints": {
+                    "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
+                    "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4}
+                    }
+                }'>
+                <div class="swiper-wrapper">
+                    {% for product in collections[section.settings.collection].products limit: section.settings.products_limit %}
+                    <div class="swiper-slide">
+                        <div class="card-product card-product-size">
+                            <div class="card-product-wrapper">
+                                <a href="{{ product.url }}" class="product-img">
+                                    <img src="{{ product.featured_image | img_url: 'master' }}" 
+                                         data-src="{{ product.featured_image | img_url: 'master' }}" 
+                                         alt="{{ product.title | escape }}" 
+                                         class="lazyload"
+                                         width="300"
+                                         height="300">
+                                </a>
+                                <div class="product-action">
+                                    <a href="#" class="action-wishlist" data-product-id="{{ product.id }}">
+                                        <i class="icon icon-heart"></i>
+                                    </a>
+                                    <form method="post" action="/cart/add" class="action-cart">
+                                        <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                                        <button type="submit" class="btn-cart">
+                                            <i class="icon icon-cart"></i>
+                                        </button>
+                                    </form>
+                                    <a href="{{ product.url }}" class="action-quickview">
+                                        <i class="icon icon-eye"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-product-content">
+                                <div class="product-category">
+                                    {% for collection in product.collections limit: 1 %}
+                                    <a href="{{ collection.url }}">{{ collection.title }}</a>
+                                    {% endfor %}
+                                </div>
+                                <h3 class="product-name">
+                                    <a href="{{ product.url }}">{{ product.title }}</a>
+                                </h3>
+                                <div class="product-price">
+                                    {% if product.compare_at_price > product.price %}
+                                    <span class="price-sale">{{ product.price | money }}</span>
+                                    <span class="price-compare">{{ product.compare_at_price | money }}</span>
+                                    {% else %}
+                                    <span class="price">{{ product.price | money }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="swiper-pagination sw-pagination-top-pick"></div>
+                <div class="swiper-button-next nav-next-top-pick"></div>
+                <div class="swiper-button-prev nav-prev-top-pick"></div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /Today's Picks --> 

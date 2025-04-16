@@ -1,6 +1,6 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: true
 ---
 
@@ -8,3 +8,6 @@ alwaysApply: true
 
 - You can @ files here
 - You can use markdown but dont have to
+- Must follow [PROMPT.md](mdc:PROMPT.md)
+- Always add width and height attributes on img tags of liquid file
+- Add translation for search placeholder of liquid file

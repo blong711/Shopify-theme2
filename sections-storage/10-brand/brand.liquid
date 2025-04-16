@@ -1,0 +1,113 @@
+{% schema %}
+{
+  "name": "Brand",
+  "settings": [
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 20,
+      "max": 200,
+      "step": 10,
+      "unit": "ms",
+      "label": "Slider speed",
+      "default": 80
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Slider style",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "clone",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Number of clones",
+      "default": 2
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "brand_image",
+          "label": "Brand image"
+        },
+        {
+          "type": "url",
+          "id": "brand_link",
+          "label": "Brand link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand",
+      "blocks": [
+        {
+          "type": "brand"
+        },
+        {
+          "type": "brand"
+        },
+        {
+          "type": "brand"
+        },
+        {
+          "type": "brand"
+        },
+        {
+          "type": "brand"
+        },
+        {
+          "type": "brand"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<div class="flat-spacing-2">
+  <div class="container">
+    <div class="infiniteslide tf-brand" data-clone="{{ section.settings.clone }}" data-style="{{ section.settings.style }}" data-speed="{{ section.settings.speed }}">
+      {% for block in section.blocks %}
+        <div class="brand-item" {{ block.shopify_attributes }}>
+          {% if block.settings.brand_link != blank %}
+            <a href="{{ block.settings.brand_link }}">
+          {% endif %}
+            {% if block.settings.brand_image != blank %}
+              <img 
+                src="{{ block.settings.brand_image | img_url: 'master' }}" 
+                alt="{{ block.settings.brand_image.alt | escape }}"
+                width="{{ block.settings.brand_image.width }}"
+                height="{{ block.settings.brand_image.height }}"
+                loading="lazy"
+              >
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          {% if block.settings.brand_link != blank %}
+            </a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div> 

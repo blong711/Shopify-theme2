@@ -1,0 +1,176 @@
+<!-- Sellers -->
+<section class="flat-spacing-3 overflow-hidden">
+    <div class="container">
+        <div class="flat-title wow fadeInUp">
+            <h4 class="title">{{ section.settings.title }}</h4>
+        </div>
+        <div class="fl-control-sw2 pos2 wow fadeInUp">
+            <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
+                    "slidesPerView": 2,
+                    "spaceBetween": 12,
+                    "speed": {{ section.settings.speed }},
+                    "slidesPerGroup": 2,
+                    "navigation": {
+                        "clickable": true,
+                        "nextEl": ".nav-next-seller",
+                        "prevEl": ".nav-prev-seller"
+                    },
+                    "pagination": { "el": ".sw-pagination-seller", "clickable": true },
+                    "breakpoints": {
+                    "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
+                    "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4}
+                    }
+                }'>
+                <div class="swiper-wrapper">
+                    {% for product in section.settings.collection.products limit: section.settings.products_to_show %}
+                        <div class="swiper-slide">
+                            <div class="card-product {% if product.available == false %}out-of-stock{% endif %} {% if product.variants.size > 1 %}card-product-size{% endif %}">
+                                <div class="card-product-wrapper">
+                                    <a href="{{ product.url }}" class="product-img">
+                                        <img class="img-product lazyload"
+                                            data-src="{{ product.featured_image | img_url: 'master' }}"
+                                            src="{{ product.featured_image | img_url: 'master' }}" 
+                                            alt="{{ product.featured_image.alt | escape }}"
+                                            width="{{ product.featured_image.width }}"
+                                            height="{{ product.featured_image.height }}">
+                                        {% if product.images.size > 1 %}
+                                            <img class="img-hover lazyload"
+                                                data-src="{{ product.images[1] | img_url: 'master' }}"
+                                                src="{{ product.images[1] | img_url: 'master' }}" 
+                                                alt="{{ product.images[1].alt | escape }}"
+                                                width="{{ product.images[1].width }}"
+                                                height="{{ product.images[1].height }}">
+                                        {% endif %}
+                                    </a>
+                                    {% if product.compare_at_price > product.price %}
+                                        <div class="on-sale-wrap">
+                                            <span class="on-sale-item">
+                                                {{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}% Off
+                                            </span>
+                                        </div>
+                                    {% endif %}
+                                    <ul class="list-product-btn">
+                                        <li>
+                                            <a href="#shoppingCart" data-bs-toggle="offcanvas"
+                                                class="hover-tooltip tooltip-left box-icon">
+                                                <span class="icon icon-cart2"></span>
+                                                <span class="tooltip">Add to Cart</span>
+                                            </a>
+                                        </li>
+                                        <li class="wishlist">
+                                            <a href="javascript:void(0);"
+                                                class="hover-tooltip tooltip-left box-icon">
+                                                <span class="icon icon-heart2"></span>
+                                                <span class="tooltip">Add to Wishlist</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#quickView" data-bs-toggle="modal"
+                                                class="hover-tooltip tooltip-left box-icon quickview">
+                                                <span class="icon icon-view"></span>
+                                                <span class="tooltip">Quick View</span>
+                                            </a>
+                                        </li>
+                                        <li class="compare">
+                                            <a href="#compare" data-bs-toggle="modal"
+                                                class="hover-tooltip tooltip-left box-icon">
+                                                <span class="icon icon-compare"></span>
+                                                <span class="tooltip">Add to Compare</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    {% if product.variants.size > 1 %}
+                                        <ul class="size-box">
+                                            {% for option in product.options_with_values %}
+                                                {% if option.name == 'Size' %}
+                                                    {% for value in option.values %}
+                                                        <li class="size-item text-xs text-white">{{ value }}</li>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                                <div class="card-product-info">
+                                    <a href="{{ product.url }}"
+                                        class="name-product link fw-medium text-md">{{ product.title }}</a>
+                                    <p class="price-wrap fw-medium">
+                                        <span class="price-new text-primary">{{ product.price | money }}</span>
+                                        {% if product.compare_at_price > product.price %}
+                                            <span class="price-old text-dark">{{ product.compare_at_price | money }}</span>
+                                        {% endif %}
+                                    </p>
+                                    {% if product.options_with_values.size > 0 %}
+                                        <ul class="list-color-product">
+                                            {% for option in product.options_with_values %}
+                                                {% if option.name == 'Color' %}
+                                                    {% for value in option.values %}
+                                                        <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
+                                                            <span class="tooltip color-filter">{{ value }}</span>
+                                                            <span class="swatch-value bg-{{ value | handleize }}"></span>
+                                                        </li>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="d-flex d-xl-none sw-dot-default sw-pagination-seller justify-content-center"></div>
+                <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-seller"></div>
+                <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-seller"></div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /Sellers -->
+
+{% schema %}
+{
+    "name": "Best Sellers",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Section title",
+            "default": "Best Sellers"
+        },
+        {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+        },
+        {
+            "type": "range",
+            "id": "products_to_show",
+            "min": 4,
+            "max": 12,
+            "step": 1,
+            "default": 8,
+            "label": "Number of products to show"
+        },
+        {
+            "type": "range",
+            "id": "speed",
+            "min": 100,
+            "max": 2000,
+            "step": 100,
+            "unit": "ms",
+            "label": "Transition speed",
+            "default": 800
+        }
+    ],
+    "presets": [
+        {
+            "name": "Best Sellers",
+            "settings": {
+                "title": "Best Sellers",
+                "products_to_show": 8
+            }
+        }
+    ]
+}
+{% endschema %} 
