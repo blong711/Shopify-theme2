@@ -1,88 +1,62 @@
-# Header Conversion Guide: Home Electronic to Shopify Liquid
+# 🧩 Slider Conversion Guide: Home Electronic to Shopify Liquid
 
 ## 🎯 Objective
-Convert vineta/header-home-electronic.html into a highly customizable Liquid section, precisely identifying all needed settings from the source HTML.
+Convert `vineta/slider-home-electronic.html` into a highly customizable Shopify Liquid section. The goal is to **reuse the existing section** by adding a new layout to support the "home-electronic" version that displays **hero slider**.
+
+---
 
 ## 📥 Input & Output
-- Input: vineta/header-home-electronic.html (electronic theme header HTML)
-- Existing Component: sections-storage/02-header/header.liquid (from home1)
-- Output: Header Liquid section with settings derived from input HTML
+
+- **Input HTML**:  
+  `/home/ryotaru/Shopify-theme2/vineta/slider-home-electronic.html`  
+  (slider section from the "Home Electronic" page)
+
+- **Existing Component**:  
+  `sections-storage/03-slider/slider.liquid` (used in "Home 1")
+
+- **Output**:  
+  Updated section (e.g., `slider.liquid`) with support for the `"home-electronic"` layout using dynamic settings and/or blocks.  
+  **Collections and product sliders must be excluded in this layout.**
+
+---
 
 ## 📋 Conversion Process
 
-### Step 1: Analyze Input HTML to Identify Settings
-1. Thoroughly examine header-home-electronic.html to identify:
-   - Text content that should become settings
-   - Images that need customization
-   - Links that require adjustment
-   - Repeating elements that could become blocks
-   - Any other dynamic components
+### Step 1: Analyze Input HTML
 
-2. Create a specific list of required settings:
-   
-   [Create list based on HTML analysis]
-   Example:
-   - Logo (image_picker)
-   - Announcement text (text)
-   - Navigation menu (link_list)
-   - Promotion badge text (text)
-   - Hotline text (text)
-   - Search placeholder (text)
-   - etc.
-   
+1. Open and study `slider-home-electronic.html`:
+   - Identify dynamic text (e.g., headings, labels)
+   - Extract customizable icons (could be image, SVG, or class name) and links
+   - Note repeated slider elements (with no products or collections)
+   - Determine visual differences in layout (e.g., spacing, shape, alignment)
 
-### Step 2: Structure Schema for the Section
-1. Organize settings into logical groups:
-   
-   {% schema %}
+2. Define required settings:
+   - Section heading/subheading
+   - Repeating blocks for slider:
+     - icon class or image
+     - title
+     - optional link
+   - Optional layout tweaks (e.g., text alignment, icon size, columns)
+
+---
+
+### Step 2: Extend Section Schema with New Layout Option
+
+If this layout differs from default:
+
+1. Add a layout setting to the schema:
+   ```json
    {
-     "name": "Header Electronic",
-     "settings": [
-       {
-         "type": "header",
-         "content": "Layout & Logo"
-       },
-       {
-         "type": "select",
-         "id": "layout",
-         "label": "Header Layout",
-         "options": [
-           {"value": "default", "label": "Default"},
-           {"value": "electronic", "label": "Electronic"}
-         ],
-         "default": "electronic"
-       },
-       {
-         "type": "image_picker",
-         "id": "logo",
-         "label": "Logo"
-       },
-       // [Add settings based on HTML analysis]
-       
-       {
-         "type": "header",
-         "content": "Announcement Bar"
-       },
-       {
-         "type": "text",
-         "id": "announcement_text",
-         "label": "Announcement Text",
-         "default": "[Extract default from HTML]"
-       },
-       // [Continue adding settings from analysis]
+     "type": "select",
+     "id": "layout",
+     "label": "Section Layout",
+     "options": [
+       { "value": "default", "label": "Default" },
+       { "value": "home-electronic", "label": "Home Electronic (Slider)" }
      ],
-     "blocks": [
-       // [Define blocks if needed from HTML analysis]
-     ],
-     "presets": [
-       {
-         "name": "Header Electronic",
-         "category": "Header"
-       }
-     ]
+     "default": "home-electronic"
    }
-   {% endschema %}
-   
+
 
 ### Step 3: Convert HTML to Liquid Using Identified Settings
 1. Replace static text with Liquid variables:
@@ -136,7 +110,6 @@ Convert vineta/header-home-electronic.html into a highly customizable Liquid sec
 
 ## 🔍 Comprehensive Checklist
 
-Quoc Bao Nguyen, [4/16/2025 11:07 AM]
 1. HTML Analysis
    - [ ] List all dynamic text to convert to settings
    - [ ] Identify all images requiring customization

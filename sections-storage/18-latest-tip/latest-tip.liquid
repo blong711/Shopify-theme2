@@ -1,0 +1,106 @@
+{% schema %}
+{
+  "name": "Latest Tips & Trends",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Latest Tips & Trends"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Section Description",
+      "default": "Discover expert advice, style inspiration, and product updates on our blog."
+    },
+    {
+      "type": "range",
+      "id": "posts_limit",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "label": "Number of Posts to Show",
+      "default": 6
+    },
+    {
+      "type": "select",
+      "id": "blog",
+      "label": "Blog",
+      "info": "Select which blog to display posts from",
+      "options": [
+        {
+          "value": "news",
+          "label": "News"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Latest Tips & Trends",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="flat-spacing-3 pt-0">
+  <div class="container">
+    <div class="flat-title wow fadeInUp">
+      <h4 class="title">{{ section.settings.title }}</h4>
+      <p class="desc text-main text-md">{{ section.settings.description }}</p>
+    </div>
+    <div class="fl-control-sw wow fadeInUp">
+      <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+              "slidesPerView": 1,
+              "spaceBetween": 12,
+              "speed": 800,
+              "observer": true,
+              "observeParents": true,
+              "slidesPerGroup": 1,
+              "navigation": {
+                  "clickable": true,
+                  "nextEl": ".nav-next-new",
+                  "prevEl": ".nav-prev-new"
+              },
+              "pagination": { "el": ".sw-pagination-new", "clickable": true },
+              "breakpoints": {
+              "577": { "slidesPerView": 2, "spaceBetween": 12, "slidesPerGroup": 2 },
+              "1200": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 4}
+              }
+          }'>
+        <div class="swiper-wrapper">
+          {% assign blog = blogs[section.settings.blog] %}
+          {% for article in blog.articles limit: section.settings.posts_limit %}
+            <div class="swiper-slide">
+              <div class="news-item hover-img">
+                {% if article.image %}
+                  <a href="{{ article.url }}" class="img-style">
+                    <img src="{{ article.image | img_url: 'master' }}" 
+                         data-src="{{ article.image | img_url: 'master' }}" 
+                         alt="{{ article.title | escape }}"
+                         loading="lazy"
+                         width="370"
+                         height="250">
+                  </a>
+                {% endif %}
+                <div class="content">
+                  <a href="{{ article.url }}" class="title fw-medium link text-xl text-line-clamp-2">
+                    {{ article.title }}
+                  </a>
+                  <a href="{{ article.url }}" class="btn-readmore link">
+                    Read more <i class="icon icon-arr-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-new justify-content-center"></div>
+      </div>
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-new"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-new"></div>
+    </div>
+  </div>
+</section> 

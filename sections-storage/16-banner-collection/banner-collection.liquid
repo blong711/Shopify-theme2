@@ -1,0 +1,125 @@
+{% assign section_spacing = section.settings.spacing | default: 'flat-spacing-3' %}
+{% assign banner_class = section.settings.banner_class | default: 'banner-cls-electric' %}
+
+<div class="s-banner-colection {{ banner_class }} {{ section_spacing }}">
+    <div class="container">
+        <div class="banner-content tf-grid-layout tf-col-2 hover-overlay-2">
+            <div class="image">
+                {% if section.settings.banner_image != blank %}
+                    <img src="{{ section.settings.banner_image | image_url }}"
+                         alt="{{ section.settings.banner_image.alt | default: section.settings.title }}"
+                         class="lazyload"
+                         width="{{ section.settings.banner_image.width }}"
+                         height="{{ section.settings.banner_image.height }}">
+                {% endif %}
+            </div>
+            <div class="box-content">
+                <div class="box-title-banner wow fadeInUp">
+                    <p class="title display-md fw-medium">
+                        {{ section.settings.title }}
+                    </p>
+                    <p class="sub text-md text-main">
+                        {{ section.settings.subtitle }}
+                    </p>
+                </div>
+                {% if section.settings.show_button %}
+                    <div class="box-btn-banner wow fadeInUp">
+                        <a href="{{ section.settings.button_url }}" class="tf-btn btn-dark2 animate-btn">
+                            {{ section.settings.button_text }}
+                            <i class="icon icon-arr-right"></i>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Banner Collection",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "banner_image",
+            "label": "Banner Image"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Unmatched Performance"
+        },
+        {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Subtitle",
+            "default": "Upgrade your devices with cutting-edge technology."
+        },
+        {
+            "type": "select",
+            "id": "spacing",
+            "label": "Section Spacing",
+            "options": [
+                {
+                    "value": "flat-spacing-3",
+                    "label": "Default"
+                },
+                {
+                    "value": "flat-spacing-4",
+                    "label": "Medium"
+                },
+                {
+                    "value": "flat-spacing-5",
+                    "label": "Large"
+                }
+            ],
+            "default": "flat-spacing-3"
+        },
+        {
+            "type": "select",
+            "id": "banner_class",
+            "label": "Banner Style",
+            "options": [
+                {
+                    "value": "banner-cls-electric",
+                    "label": "Electric"
+                },
+                {
+                    "value": "banner-cls-default",
+                    "label": "Default"
+                }
+            ],
+            "default": "banner-cls-electric"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_button",
+            "label": "Show Button",
+            "default": true
+        },
+        {
+            "type": "url",
+            "id": "button_url",
+            "label": "Button URL"
+        },
+        {
+            "type": "text",
+            "id": "button_text",
+            "label": "Button Text",
+            "default": "Shop Now"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Banner Collection",
+            "settings": {
+                "title": "Unmatched Performance",
+                "subtitle": "Upgrade your devices with cutting-edge technology.",
+                "show_button": true,
+                "button_text": "Shop Now"
+            }
+        }
+    ]
+}
+{% endschema %} 

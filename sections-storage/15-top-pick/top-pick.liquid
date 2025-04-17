@@ -1,0 +1,293 @@
+{% assign section_spacing = section.settings.spacing | default: 'flat-spacing-8' %}
+{% assign section_bg = section.settings.background_color | default: 'bg-surface' %}
+
+<section class="{{ section_spacing }} {{ section_bg }}">
+    <div class="container">
+        <div class="flat-title style-between align-items-end wow fadeInUp">
+            <div class="box-title">
+                <h4 class="title">{{ section.settings.title }}</h4>
+                <p class="desc text-main text-md">{{ section.settings.description }}</p>
+            </div>
+            {% if section.settings.show_view_all %}
+                <a href="{{ section.settings.view_all_link }}" class="btn-underline">{{ section.settings.view_all_text }}</a>
+            {% endif %}
+        </div>
+        <div class="fl-control-sw">
+            <div dir="ltr" class="sw-height swiper tf-swiper" data-swiper='{
+                    "slidesPerView": 2,
+                    "spaceBetween": 12,
+                    "speed": 800,
+                    "observer": true,
+                    "observeParents": true,
+                    "slidesPerGroup": 2,
+                    "navigation": {
+                        "clickable": true,
+                        "nextEl": ".nav-next-top-pick",
+                        "prevEl": ".nav-prev-top-pick"
+                    },
+                    "pagination": { "el": ".sw-pagination-top-pick", "clickable": true },
+                    "breakpoints": {
+                    "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
+                    "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4}
+                    }
+                }'>
+                <div class="swiper-wrapper wow fadeInUp">
+                    {% for block in section.blocks %}
+                        {% if block.type == 'product' %}
+                            <div class="swiper-slide" {{ block.shopify_attributes }}>
+                                <div class="card-product style-center">
+                                    <div class="card-product-wrapper">
+                                        <a href="{{ block.settings.product_url }}" class="product-img">
+                                            <img class="img-product lazyload" 
+                                                data-src="{{ block.settings.product_image | image_url }}"
+                                                src="{{ block.settings.product_image | image_url }}"
+                                                alt="{{ block.settings.product_title }}"
+                                                width="400"
+                                                height="400">
+                                            {% if block.settings.product_hover_image != blank %}
+                                                <img class="img-hover lazyload"
+                                                    data-src="{{ block.settings.product_hover_image | image_url }}"
+                                                    src="{{ block.settings.product_hover_image | image_url }}"
+                                                    alt="{{ block.settings.product_title }}"
+                                                    width="400"
+                                                    height="400">
+                                            {% endif %}
+                                        </a>
+                                        {% if block.settings.show_sale_badge or block.settings.show_trending_badge %}
+                                            <div class="on-sale-wrap flex-column type-2">
+                                                {% if block.settings.show_sale_badge %}
+                                                    <span class="on-sale-item">{{ block.settings.sale_badge_text }}</span>
+                                                {% endif %}
+                                                {% if block.settings.show_trending_badge %}
+                                                    <span class="on-sale-item trending">{{ block.settings.trending_badge_text }}</span>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                        <ul class="list-product-btn">
+                                            <li>
+                                                <a href="#shoppingCart" data-bs-toggle="offcanvas" class="bg-surface hover-tooltip tooltip-left box-icon">
+                                                    <span class="icon icon-cart2"></span>
+                                                    <span class="tooltip">{{ 'products.product.add_to_cart' | t }}</span>
+                                                </a>
+                                            </li>
+                                            <li class="wishlist">
+                                                <a href="javascript:void(0);" class="bg-surface hover-tooltip tooltip-left box-icon">
+                                                    <span class="icon icon-heart2"></span>
+                                                    <span class="tooltip">{{ 'products.product.add_to_wishlist' | t }}</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#quickView" data-bs-toggle="modal" class="bg-surface hover-tooltip tooltip-left box-icon quickview">
+                                                    <span class="icon icon-view"></span>
+                                                    <span class="tooltip">{{ 'products.product.quick_view' | t }}</span>
+                                                </a>
+                                            </li>
+                                            <li class="compare">
+                                                <a href="#compare" data-bs-toggle="modal" class="bg-surface hover-tooltip tooltip-left box-icon">
+                                                    <span class="icon icon-compare"></span>
+                                                    <span class="tooltip">{{ 'products.product.add_to_compare' | t }}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-product-info text-center">
+                                        <a href="{{ block.settings.product_url }}" class="name-product link fw-medium text-md">
+                                            {{ block.settings.product_title }}
+                                        </a>
+                                        <p class="price-wrap fw-medium">
+                                            <span class="price-new {% if block.settings.show_sale_price %}text-primary{% endif %}">
+                                                {{ block.settings.product_price | money }}
+                                            </span>
+                                            {% if block.settings.show_compare_price and block.settings.product_compare_price != blank %}
+                                                <span class="price-old old-line">{{ block.settings.product_compare_price | money }}</span>
+                                            {% endif %}
+                                        </p>
+                                        {% if block.settings.show_color_swatches %}
+                                            <ul class="list-color-product justify-content-center">
+                                                {% for color in block.settings.color_swatches %}
+                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
+                                                        <span class="tooltip">{{ color.name }}</span>
+                                                        <span class="swatch-value {{ color.class }}"></span>
+                                                        <img class="lazyload"
+                                                            data-src="{{ color.image | image_url }}"
+                                                            src="{{ color.image | image_url }}"
+                                                            alt="{{ color.name }}"
+                                                            width="400"
+                                                            height="400">
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="d-flex d-xl-none sw-dot-default sw-pagination-top-pick justify-content-center"></div>
+            </div>
+            <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-top-pick"></div>
+            <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-top-pick"></div>
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": "Top Picks",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Section Title",
+            "default": "Top Picks You'll Love"
+        },
+        {
+            "type": "textarea",
+            "id": "description",
+            "label": "Section Description",
+            "default": "Explore our most popular pieces that customers can't get enough of"
+        },
+        {
+            "type": "select",
+            "id": "spacing",
+            "label": "Section Spacing",
+            "options": [
+                {
+                    "value": "flat-spacing-8",
+                    "label": "Large"
+                },
+                {
+                    "value": "flat-spacing-4",
+                    "label": "Medium"
+                },
+                {
+                    "value": "flat-spacing-2",
+                    "label": "Small"
+                }
+            ],
+            "default": "flat-spacing-8"
+        },
+        {
+            "type": "select",
+            "id": "background_color",
+            "label": "Background Color",
+            "options": [
+                {
+                    "value": "bg-surface",
+                    "label": "Surface"
+                },
+                {
+                    "value": "bg-light",
+                    "label": "Light"
+                }
+            ],
+            "default": "bg-surface"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_view_all",
+            "label": "Show View All Link",
+            "default": true
+        },
+        {
+            "type": "url",
+            "id": "view_all_link",
+            "label": "View All Link"
+        },
+        {
+            "type": "text",
+            "id": "view_all_text",
+            "label": "View All Text",
+            "default": "View all"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "product",
+            "name": "Product",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "product_title",
+                    "label": "Product Title"
+                },
+                {
+                    "type": "url",
+                    "id": "product_url",
+                    "label": "Product URL"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "product_image",
+                    "label": "Product Image"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "product_hover_image",
+                    "label": "Product Hover Image"
+                },
+                {
+                    "type": "text",
+                    "id": "product_price",
+                    "label": "Product Price"
+                },
+                {
+                    "type": "text",
+                    "id": "product_compare_price",
+                    "label": "Compare at Price"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "show_sale_badge",
+                    "label": "Show Sale Badge",
+                    "default": false
+                },
+                {
+                    "type": "text",
+                    "id": "sale_badge_text",
+                    "label": "Sale Badge Text",
+                    "default": "20% Off"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "show_trending_badge",
+                    "label": "Show Trending Badge",
+                    "default": false
+                },
+                {
+                    "type": "text",
+                    "id": "trending_badge_text",
+                    "label": "Trending Badge Text",
+                    "default": "Trending"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "show_color_swatches",
+                    "label": "Show Color Swatches",
+                    "default": true
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Top Picks",
+            "blocks": [
+                {
+                    "type": "product"
+                },
+                {
+                    "type": "product"
+                },
+                {
+                    "type": "product"
+                },
+                {
+                    "type": "product"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %} 

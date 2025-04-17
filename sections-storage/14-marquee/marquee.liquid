@@ -1,0 +1,104 @@
+{% assign bg_class = section.settings.background_color %}
+
+<div class="marquee-sale {{ bg_class }}">
+    <div class="marquee-wrapper">
+        <div class="initial-child-container">
+            {% for block in section.blocks %}
+                {% if block.type == 'text' %}
+                    <div class="marquee-child-item" {{ block.shopify_attributes }}>
+                        <p class="display-xs fw-medium">{{ block.settings.text }}</p>
+                    </div>
+                {% elsif block.type == 'icon' %}
+                    <div class="marquee-child-item" {{ block.shopify_attributes }}>
+                        <i class="{{ block.settings.icon_class }}"></i>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Marquee Announcement",
+    "settings": [
+        {
+            "type": "select",
+            "id": "background_color",
+            "label": "Background Color",
+            "options": [
+                {
+                    "value": "bg-light-green-2",
+                    "label": "Light Green"
+                },
+                {
+                    "value": "bg-light-blue",
+                    "label": "Light Blue"
+                },
+                {
+                    "value": "bg-light-gray",
+                    "label": "Light Gray"
+                }
+            ],
+            "default": "bg-light-green-2"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "text",
+            "name": "Text Item",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "text",
+                    "label": "Announcement Text",
+                    "default": "50% Off On Selected Items"
+                }
+            ]
+        },
+        {
+            "type": "icon",
+            "name": "Icon Item",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "icon_class",
+                    "label": "Icon Class",
+                    "default": "icon-flash-star"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Marquee Announcement",
+            "blocks": [
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "50% Off On Selected Items"
+                    }
+                },
+                {
+                    "type": "icon",
+                    "settings": {
+                        "icon_class": "icon-flash-star"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "New Arrival"
+                    }
+                },
+                {
+                    "type": "icon",
+                    "settings": {
+                        "icon_class": "icon-flash-star"
+                    }
+                }
+            ]
+        }
+    ]
+}
+{% endschema %} 

@@ -1,0 +1,10 @@
+{
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "add_to_wishlist": "Add to Wishlist",
+      "quick_view": "Quick View",
+      "add_to_compare": "Add to Compare"
+    }
+  }
+} 
