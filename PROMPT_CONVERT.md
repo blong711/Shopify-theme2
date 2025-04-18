@@ -1,6 +1,6 @@
 # 🧩 Prompt for Cursor AI: Convert New Sections from HTML to Shopify Liquid
 
-Convert **only new sections** from the HTML file `vineta/home-fashion-women.html` into Shopify Liquid, and document each conversion clearly.
+Convert **only new sections** from the HTML file `vineta/home-fashion-02.html` into Shopify Liquid, and document each conversion clearly.
 
 ---
 
@@ -17,19 +17,20 @@ Inside each folder, include the following files:
 
 ### 1. `[section-name].html`
 
-- The raw HTML of the **new** section from `home-fashion-women.html`.
+- The raw HTML of the **new** section from `home-fashion-02.html`.
 - Section has in HTML:
- - Top Bar(already converted): Line 50-162
- - Header(already converted): Line 163-1082
- - Slider(already converted): Line 1083-1201
- - Collection(already converted): Line 1202-1276
- - Top Sellers tab: Line 1277-3120
- - Banner with text: Line 3121-3168
- - Testimonial(already converted): Line 3169-3262
- - Brand(already converted): Line 3263-3322
- - Shop Gram(already converted): Line 3323-3413
- - Icon box(already converted): Line 3414-3480
- - Footer(already converted): Line 3481-3682
+ - Top Bar(already converted): Line 49-161
+ - Header(already converted): Line 162-1102
+ - Collection Slider: Line 1103-1156
+ - Top picks(already converted): Line 1157-1656
+ - Banner with text(already converted): Line 1657-1695
+ - Limited deals(already converted): Line 1696-2195
+ - Banner collection(already converted): Line 2196-2222
+ - Brand(already converted): Line 2223-2282
+ - Testimonial(already converted): Line 2283-2501
+ - Latest tip(already converted): Line 2502-2598
+ - Icon box(already converted): Line 2599-2664
+ - Footer(already converted): Line 2665-2866
 
 ### 2. `[section-name].liquid`
 
@@ -60,7 +61,7 @@ Path to Liquid: shopify-theme2/sections-storage/01-hero/hero.liquid
 ## ⛔ Skip Existing Sections
 
 - Check the folders already in `shopify-theme2/sections-storage/`.
-- Only convert **new** or **modified** sections from `vineta/home-fashion-women.html`.
+- Only convert **new** or **modified** sections from `vineta/home-fashion-02.html`.
 - **Do not** duplicate sections that already exist.
 
 ---
@@ -97,6 +98,6 @@ Maintain consistent folder and file naming.
 
 Ensure README.md is comprehensive and helpful for future developers.
 
-Repeat this process for every new section in vineta/home-fahsion-women.html.
+Repeat this process for every new section in vineta/home-fahsion-02.html.
 
 This will ensure your Shopify theme remains modular, editable in the theme editor, and well-documented for long-term maintainability.

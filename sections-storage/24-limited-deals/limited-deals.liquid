@@ -1,0 +1,252 @@
+{%- style -%}
+  .limited-deals {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;
+  }
+{%- endstyle -%}
+
+<section class="limited-deals">
+  <div class="container">
+    <div class="flat-title wow fadeInUp">
+      <h4 class="title">{{ section.settings.title }}</h4>
+      <p class="desc text-main text-md">{{ section.settings.description }}</p>
+    </div>
+    <div class="hover-sw-nav hover-sw-2 wow fadeInUp">
+      <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
+        "slidesPerView": 2,
+        "spaceBetween": 12,
+        "speed": 800,
+        "observer": true,
+        "observeParents": true,
+        "slidesPerGroup": 2,
+        "navigation": {
+          "clickable": true,
+          "nextEl": ".nav-next-deal",
+          "prevEl": ".nav-prev-deal"
+        },
+        "pagination": { "el": ".sw-pagination-deal", "clickable": true },
+        "breakpoints": {
+          "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
+          "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4}
+        }
+      }'>
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="card-product card-product-size style-2">
+                <div class="card-product-wrapper">
+                  <a href="{{ block.settings.product.url }}" class="product-img">
+                    {% if block.settings.product.featured_image %}
+                      <img class="img-product lazyload"
+                        data-src="{{ block.settings.product.featured_image | image_url }}"
+                        src="{{ block.settings.product.featured_image | image_url }}" 
+                        alt="{{ block.settings.product.featured_image.alt }}"
+                        width="{{ block.settings.product.featured_image.width }}"
+                        height="{{ block.settings.product.featured_image.height }}">
+                    {% endif %}
+                    {% if block.settings.hover_image %}
+                      <img class="img-hover lazyload"
+                        data-src="{{ block.settings.hover_image | image_url }}"
+                        src="{{ block.settings.hover_image | image_url }}" 
+                        alt="{{ block.settings.hover_image.alt }}"
+                        width="{{ block.settings.hover_image.width }}"
+                        height="{{ block.settings.hover_image.height }}">
+                    {% endif %}
+                  </a>
+                  {% if block.settings.show_sale_badge %}
+                    <div class="on-sale-wrap">
+                      <span class="on-sale-item">{{ block.settings.sale_badge_text }}</span>
+                    </div>
+                  {% endif %}
+                  <ul class="list-product-btn">
+                    <li>
+                      <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip box-icon">
+                        <span class="icon icon-cart2"></span>
+                        <span class="tooltip">{{ 'products.product.add_to_cart' | t }}</span>
+                      </a>
+                    </li>
+                    <li class="wishlist">
+                      <a href="javascript:void(0);" class="hover-tooltip box-icon">
+                        <span class="icon icon-heart2"></span>
+                        <span class="tooltip">{{ 'products.product.add_to_wishlist' | t }}</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip box-icon quickview">
+                        <span class="icon icon-view"></span>
+                        <span class="tooltip">{{ 'products.product.quick_view' | t }}</span>
+                      </a>
+                    </li>
+                    <li class="compare">
+                      <a href="#compare" data-bs-toggle="modal" class="hover-tooltip box-icon">
+                        <span class="icon icon-compare"></span>
+                        <span class="tooltip">{{ 'products.product.add_to_compare' | t }}</span>
+                      </a>
+                    </li>
+                  </ul>
+                  {% if block.settings.show_sizes %}
+                    <ul class="size-box">
+                      {% for size in block.settings.sizes %}
+                        <li class="size-item text-xs text-white">{{ size }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+                <div class="card-product-info">
+                  <a href="{{ block.settings.product.url }}" class="name-product link fw-medium text-md">
+                    {{ block.settings.product.title }}
+                  </a>
+                  <p class="price-wrap fw-medium">
+                    {% if block.settings.product.compare_at_price > block.settings.product.price %}
+                      <span class="price-new text-primary">{{ block.settings.product.price | money }}</span>
+                      <span class="price-old">{{ block.settings.product.compare_at_price | money }}</span>
+                    {% else %}
+                      <span class="price-new">{{ block.settings.product.price | money }}</span>
+                    {% endif %}
+                  </p>
+                  {% if block.settings.show_color_swatches %}
+                    <ul class="list-color-product">
+                      {% for color in block.settings.color_swatches %}
+                        <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
+                          <span class="tooltip color-filter">{{ color.name }}</span>
+                          <span class="swatch-value" style="background-color: {{ color.value }}"></span>
+                          {% if color.image %}
+                            <img class="lazyload" 
+                              data-src="{{ color.image | image_url }}"
+                              src="{{ color.image | image_url }}" 
+                              alt="{{ color.name }}"
+                              width="{{ color.image.width }}"
+                              height="{{ color.image.height }}">
+                          {% endif %}
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Limited Deals",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Limited Time Deals"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description",
+      "default": "Explore our most popular pieces that customers can't get enough of"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "image_picker",
+          "id": "hover_image",
+          "label": "Hover Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sale_badge",
+          "label": "Show Sale Badge",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "sale_badge_text",
+          "label": "Sale Badge Text",
+          "default": "20% Off"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sizes",
+          "label": "Show Sizes",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "sizes",
+          "label": "Sizes",
+          "info": "Comma separated list of sizes",
+          "default": "XS,S,M,L,XL,2XL"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_color_swatches",
+          "label": "Show Color Swatches",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Color Swatches"
+        },
+        {
+          "type": "product_option",
+          "id": "color_swatches",
+          "label": "Color Swatches",
+          "info": "Add color swatches for the product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Limited Deals",
+      "blocks": [
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 

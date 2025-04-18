@@ -1,22 +1,21 @@
-# 🧩 Slider Conversion Guide: Home Electronic to Shopify Liquid
+# 🧩 Banner Collection Conversion Guide: Home Bicycle to Shopify Liquid
 
 ## 🎯 Objective
-Convert `vineta/slider-home-electronic.html` into a highly customizable Shopify Liquid section. The goal is to **reuse the existing section** by adding a new layout to support the "home-electronic" version that displays **hero slider**.
+Convert `vineta/banner-collection-home-bicycle.html` into a highly customizable Shopify Liquid section. The goal is to **reuse the existing section** by adding a new layout to support the "home-bicycle" version that displays **banner collection**.
 
 ---
 
 ## 📥 Input & Output
 
 - **Input HTML**:  
-  `/home/ryotaru/Shopify-theme2/vineta/slider-home-electronic.html`  
-  (slider section from the "Home Electronic" page)
+  `/home/ryotaru/Shopify-theme2/vineta/banner-collection-home-bicycle.html`  
+  (collection section from the "Home Bicycle" page)
 
 - **Existing Component**:  
-  `sections-storage/03-slider/slider.liquid` (used in "Home 1")
+  `sections-storage/16-banner-collection/banner-collection.liquid`
 
 - **Output**:  
-  Updated section (e.g., `slider.liquid`) with support for the `"home-electronic"` layout using dynamic settings and/or blocks.  
-  **Collections and product sliders must be excluded in this layout.**
+  Updated section (e.g., `banner-collection.liquid`) with support for the `"home-bicycle` layout using dynamic settings and/or blocks.  
 
 ---
 
@@ -24,15 +23,14 @@ Convert `vineta/slider-home-electronic.html` into a highly customizable Shopify 
 
 ### Step 1: Analyze Input HTML
 
-1. Open and study `slider-home-electronic.html`:
+1. Open and study `banner-collection-home-bicycle.html`:
    - Identify dynamic text (e.g., headings, labels)
    - Extract customizable icons (could be image, SVG, or class name) and links
-   - Note repeated slider elements (with no products or collections)
    - Determine visual differences in layout (e.g., spacing, shape, alignment)
 
 2. Define required settings:
    - Section heading/subheading
-   - Repeating blocks for slider:
+   - Repeating blocks for banner collection:
      - icon class or image
      - title
      - optional link
@@ -52,9 +50,9 @@ If this layout differs from default:
      "label": "Section Layout",
      "options": [
        { "value": "default", "label": "Default" },
-       { "value": "home-electronic", "label": "Home Electronic (Slider)" }
+       { "value": "home-bicycle", "label": "Home Bicycle (Banner Collection)" }
      ],
-     "default": "home-electronic"
+     "default": "home-bicycle"
    }
 
 
@@ -105,7 +103,7 @@ If this layout differs from default:
 ### Step 4: Compare with Existing Header
 1. Compare settings from current header (home1) with newly identified settings:
    - Retain existing settings needed for default layout
-   - Add new settings for electronic layout
+   - Add new settings for bicycle layout
    - Create common settings for both layouts where possible
 
 ## 🔍 Comprehensive Checklist
@@ -114,7 +112,7 @@ If this layout differs from default:
    - [ ] List all dynamic text to convert to settings
    - [ ] Identify all images requiring customization
    - [ ] Identify repeating elements (menus, announcements, etc.)
-   - [ ] Identify special features of the electronic header
+   - [ ] Identify special features of the bicycle header
 
 2. Create Settings
    - [ ] Group settings by function
@@ -135,12 +133,13 @@ If this layout differs from default:
 5. Testing and Documentation
    - [ ] Verify all settings work correctly
    - [ ] Update README with list of new settings
-   - [ ] Describe how to use the electronic layout
+   - [ ] Describe how to use the bicycle layout
 
 ## ✅ Notes
 - Extract all text from HTML to create meaningful settings
 - Name settings clearly and consistently (e.g., announcement_text, hotline_number)
 - Reuse existing settings when possible instead of creating new ones
 - Provide default values from the original HTML so the section works correctly when added
+- Convert class for each layout correct 
 
 By following this guide, you'll create a highly customizable header section based on detailed analysis of the input HTML, optimizing code reuse from home1 and creating a manageable component.

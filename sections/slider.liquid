@@ -1,5 +1,5 @@
 <!-- Slider -->
-<section class="tf-slideshow {% if section.settings.layout == 'home-electronic' %}slider-electronic{% elsif section.settings.layout == 'fashion-women' %}slider-fashion-3{% else %}slider-fashion-1{% endif %} slider-default {% if section.settings.layout == 'fashion-women' %}space-abs-header{% endif %}">
+<section class="tf-slideshow {% if section.settings.layout == 'home-electronic' %}slider-electronic{% elsif section.settings.layout == 'fashion-women' %}slider-fashion-3{% elsif section.settings.layout == 'bicycle' %}slider-bicycle{% else %}slider-fashion-1{% endif %} slider-default {% if section.settings.layout == 'fashion-women' %}space-abs-header{% endif %}">
     <div class="swiper tf-sw-slideshow slider-effect-fade" data-effect="fade" data-preview="1" data-tablet="1"
         data-mobile="1" data-centered="false" data-space="0" data-space-mb="0" data-loop="{{ section.settings.loop }}"
         data-auto-play="{{ section.settings.autoplay }}" data-speed="{{ section.settings.speed }}">
@@ -26,8 +26,8 @@
                         <div class="box-content">
                             <div class="container">
                                 <div class="row">
-                                    <div class="{% if section.settings.layout == 'home-electronic' and block.settings.content_position == 'right' %}offset-lg-8 col-lg-4 col-sm-6 offset-6{% elsif section.settings.layout == 'fashion-women' %}col-lg-5 col-md-6 col-sm-7 col-10{% else %}col-lg-12 col-sm-6{% endif %} col-12">
-                                        <div class="content-slider {% if section.settings.layout == 'fashion-women' %}style-2 text-center{% endif %}">
+                                    <div class="{% if section.settings.layout == 'home-electronic' and block.settings.content_position == 'right' %}offset-lg-8 col-lg-4 col-sm-6 offset-6{% elsif section.settings.layout == 'fashion-women' %}col-lg-5 col-md-6 col-sm-7 col-10{% elsif section.settings.layout == 'bicycle' %}col-lg-5 col-md-6 col-sm-10{% else %}col-lg-12 col-sm-6{% endif %} col-12">
+                                        <div class="content-slider {% if section.settings.layout == 'fashion-women' or section.settings.layout == 'bicycle' %}style-2{% endif %}">
                                             <div class="box-title-slider">
                                                 {% if section.settings.layout == 'home-electronic' %}
                                                     <p class="sub text-md fw-medium fade-item fade-item-1 text-dark-3">
@@ -46,6 +46,13 @@
                                                     <p class="sub text-md fade-item fade-item-3 text-main">
                                                         {{ block.settings.subheading }}
                                                     </p>
+                                                {% elsif section.settings.layout == 'bicycle' %}
+                                                    <h2 class="heading display-xl-2 fw-medium fade-item fade-item-2">
+                                                        {{ block.settings.heading }}
+                                                    </h2>
+                                                    <p class="sub text-xl-2 text-main fade-item fade-item-3">
+                                                        {{ block.settings.subheading }}
+                                                    </p>
                                                 {% else %}
                                                     <h2 class="heading fw-medium fade-item fade-item-1 text-dark-5">
                                                         {{ block.settings.heading }}
@@ -56,9 +63,9 @@
                                                 {% endif %}
                                             </div>
                                             <div class="box-btn-slider {% if section.settings.layout == 'fashion-women' %}fade-item fade-item-4{% else %}fade-item fade-item-3{% endif %}">
-                                                <a href="{{ block.settings.button_link }}" class="tf-btn {% if section.settings.layout == 'fashion-women' %}animate-btn font-2{% else %}btn-dark2 animate-btn{% endif %}">
+                                                <a href="{{ block.settings.button_link }}" class="tf-btn {% if section.settings.layout == 'fashion-women' %}animate-btn font-2{% elsif section.settings.layout == 'bicycle' %}btn-space1 animate-btn btn-green-2{% else %}btn-dark2 animate-btn{% endif %}">
                                                     {{ block.settings.button_text }}
-                                                    <i class="icon icon-arr-right"></i>
+                                                    <i class="icon {% if section.settings.layout == 'bicycle' %}icon-arr-right3{% else %}icon-arr-right{% endif %}"></i>
                                                 </a>
                                             </div>
                                         </div>
@@ -90,7 +97,8 @@
             "options": [
                 { "value": "default", "label": "Default Fashion" },
                 { "value": "home-electronic", "label": "Home Electronic" },
-                { "value": "fashion-women", "label": "Fashion Women" }
+                { "value": "fashion-women", "label": "Fashion Women" },
+                { "value": "bicycle", "label": "Bicycle" }
             ],
             "default": "default"
         },
@@ -194,22 +202,28 @@
                         "subheading": "Versatile pieces for all-day style",
                         "button_text": "Shop Collection"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "name": "Bicycle Slider",
+            "settings": {
+                "layout": "bicycle"
+            },
+            "blocks": [
                 {
                     "type": "slide",
                     "settings": {
-                        "subtitle": "SUMMER COLLECTION",
-                        "heading": "Bold and Beautiful",
-                        "subheading": "Stand out with chic, trend-setting women's fashion",
+                        "heading": "Ride Into Adventure",
+                        "subheading": "Find your perfect bike today",
                         "button_text": "Shop Collection"
                     }
                 },
                 {
                     "type": "slide",
                     "settings": {
-                        "subtitle": "SUMMER COLLECTION",
-                        "heading": "Feminine Elegance",
-                        "subheading": "Find the perfect outfit for any occasion",
+                        "heading": "Adventure Awaits",
+                        "subheading": "Find the perfect bike for your outdoor journeys",
                         "button_text": "Shop Collection"
                     }
                 }
