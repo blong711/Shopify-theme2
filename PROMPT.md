@@ -1,21 +1,21 @@
-# 🧩 Banner Collection Conversion Guide: Home Bicycle to Shopify Liquid
+# 🧩 Latest tip Conversion Guide: Home Bicycle to Shopify Liquid
 
 ## 🎯 Objective
-Convert `vineta/banner-collection-home-bicycle.html` into a highly customizable Shopify Liquid section. The goal is to **reuse the existing section** by adding a new layout to support the "home-bicycle" version that displays **banner collection**.
+Convert `vineta/latest-tip-home-bicycle.html` into a highly customizable Shopify Liquid section. The goal is to **reuse the existing section** by adding a new layout to support the "home-bicycle" version that displays **latest tip**.
 
 ---
 
 ## 📥 Input & Output
 
 - **Input HTML**:  
-  `/home/ryotaru/Shopify-theme2/vineta/banner-collection-home-bicycle.html`  
-  (collection section from the "Home Bicycle" page)
+  `/home/ryotaru/Shopify-theme2/vineta/latest-tip-home-bicycle.html`  
+  (latest tip section from the "Home Bicycle" page)
 
 - **Existing Component**:  
-  `sections-storage/16-banner-collection/banner-collection.liquid`
+  `sections-storage/18-latest-tip/latest-tip.liquid`
 
 - **Output**:  
-  Updated section (e.g., `banner-collection.liquid`) with support for the `"home-bicycle` layout using dynamic settings and/or blocks.  
+  Updated section (e.g., `latest-tip.liquid`) with support for the `"home-bicycle` layout using dynamic settings and/or blocks.  
 
 ---
 
@@ -23,14 +23,14 @@ Convert `vineta/banner-collection-home-bicycle.html` into a highly customizable 
 
 ### Step 1: Analyze Input HTML
 
-1. Open and study `banner-collection-home-bicycle.html`:
+1. Open and study `latest-tip-home-bicycle.html`:
    - Identify dynamic text (e.g., headings, labels)
    - Extract customizable icons (could be image, SVG, or class name) and links
    - Determine visual differences in layout (e.g., spacing, shape, alignment)
 
 2. Define required settings:
    - Section heading/subheading
-   - Repeating blocks for banner collection:
+   - Repeating blocks for banner text:
      - icon class or image
      - title
      - optional link
@@ -50,7 +50,7 @@ If this layout differs from default:
      "label": "Section Layout",
      "options": [
        { "value": "default", "label": "Default" },
-       { "value": "home-bicycle", "label": "Home Bicycle (Banner Collection)" }
+       { "value": "home-bicycle", "label": "Home Bicycle (Latest tip)" }
      ],
      "default": "home-bicycle"
    }

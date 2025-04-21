@@ -1,0 +1,163 @@
+<!-- Top Bar-->
+<div class="tf-topbar bg-dark-5 topbar-bg">
+    <div class="container">
+        <div class="topbar-wraper">
+            {% if section.settings.show_social_icons %}
+            <div class="d-none d-xl-block flex-shrink-0">
+                <ul class="tf-social-icon topbar-left">
+                    {% if section.settings.facebook_url != blank %}
+                    <li><a href="{{ section.settings.facebook_url }}" class="social-item social-facebook"><i class="icon icon-fb"></i></a></li>
+                    {% endif %}
+                    {% if section.settings.instagram_url != blank %}
+                    <li><a href="{{ section.settings.instagram_url }}" class="social-item social-instagram"><i class="icon icon-instagram"></i></a></li>
+                    {% endif %}
+                    {% if section.settings.twitter_url != blank %}
+                    <li><a href="{{ section.settings.twitter_url }}" class="social-item social-x"><i class="icon icon-x"></i></a></li>
+                    {% endif %}
+                    {% if section.settings.snapchat_url != blank %}
+                    <li><a href="{{ section.settings.snapchat_url }}" class="social-item social-snapchat"><i class="icon icon-snapchat"></i></a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            {% endif %}
+            
+            {% if section.settings.show_announcement %}
+            <div class="overflow-hidden">
+                <div class="topbar-center marquee-wrapper">
+                    <div class="initial-child-container">
+                        {% for block in section.blocks %}
+                            {% if block.type == 'announcement' %}
+                            <div class="marquee-child-item">
+                                <p>{{ block.settings.text }}</p>
+                            </div>
+                            <div class="marquee-child-item"><span class="dot"></span></div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if section.settings.show_language_selector or section.settings.show_currency_selector %}
+            <div class="d-none d-xl-block flex-shrink-0">
+                <div class="topbar-right">
+                    {% if section.settings.show_language_selector %}
+                    <div class="tf-languages">
+                        {{ localization.language.selector }}
+                    </div>
+                    {% endif %}
+                    {% if section.settings.show_currency_selector %}
+                    <div class="tf-currencies">
+                        {{ localization.country.selector }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- /Top Bar -->
+
+{% schema %}
+{
+    "name": "Top Bar",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Social Media"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_social_icons",
+            "label": "Show Social Icons",
+            "default": true
+        },
+        {
+            "type": "url",
+            "id": "facebook_url",
+            "label": "Facebook URL"
+        },
+        {
+            "type": "url",
+            "id": "instagram_url",
+            "label": "Instagram URL"
+        },
+        {
+            "type": "url",
+            "id": "twitter_url",
+            "label": "Twitter URL"
+        },
+        {
+            "type": "url",
+            "id": "snapchat_url",
+            "label": "Snapchat URL"
+        },
+        {
+            "type": "header",
+            "content": "Announcement Bar"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_announcement",
+            "label": "Show Announcement",
+            "default": true
+        },
+        {
+            "type": "header",
+            "content": "Language & Currency"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_language_selector",
+            "label": "Show Language Selector",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_currency_selector",
+            "label": "Show Currency Selector",
+            "default": true
+        }
+    ],
+    "blocks": [
+        {
+            "type": "announcement",
+            "name": "Announcement",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "text",
+                    "label": "Text",
+                    "default": "Announcement text here"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Top Bar",
+            "blocks": [
+                {
+                    "type": "announcement",
+                    "settings": {
+                        "text": "Return extended to 60 days"
+                    }
+                },
+                {
+                    "type": "announcement",
+                    "settings": {
+                        "text": "Life-time Guarantees"
+                    }
+                },
+                {
+                    "type": "announcement",
+                    "settings": {
+                        "text": "Limited-Time Offer"
+                    }
+                }
+            ]
+        }
+    ]
+}
+{% endschema %} 

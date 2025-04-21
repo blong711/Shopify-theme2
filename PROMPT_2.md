@@ -1,31 +1,32 @@
-# 🗂 Banner Collection Conversion Guide: Adding Home Fashion 02 Layout
+# 🗂 Testimonial Conversion Guide: Adding Home Fashion 02 Layout
 
 ## 🎯 Objective
-Extend the existing banner-collection.liquid section to support a new "Home Fashion 02" layout. The goal is to modify the current file with minimal changes while adding full support for the new layout alongside the existing ones.
+Extend the existing testimonial.liquid section to support a new "Home Fashion 02" layout. The goal is to modify the current file with minimal changes while adding full support for the new layout alongside the existing ones.
 
 ---
 
 ## 📥 Input & Output
 
 - Input HTML:  
-  /home/ryotaru/Shopify-theme2/vineta/banner-collection-fashion-02.html (banner collection section from the "Home Fashion 02" page)
+  /home/ryotaru/Shopify-theme2/vineta/testimonial-home-fashion-02.html (testimonial section from the "Home Fashion 02" page)
 
 - Existing Component:  
-  sections-storage/16-banner-collection/banner-collection.liquid (EXISTING FILE already supporting both "Home Electronic" and "Home Bicycle" layouts)
-    - HTML of Banner Collection Home Bicycle: /home/ryotaru/Shopify-theme2/vineta/banner-collection-home-bicycle.html
-    - HTML of Banner Collection Home Electronic: /home/ryotaru/Shopify-theme2/vineta/banner-collection-home-electronic.html
+  sections-storage/09-testimonial/testimonial.liquid (EXISTING FILE already supporting both "Home Default", "Home Electronic" and "Home Fashion Women" layouts)
+    - HTML of Testimonial Home Default: /home/ryotaru/Shopify-theme2/vineta/testimonial-home-default.html
+    - HTML of Testimonial Home Electronic: /home/ryotaru/Shopify-theme2/vineta/testimonial-home-electronic.html
+    - HTML of Testimonial Home Fashion Women: /home/ryotaru/Shopify-theme2/vineta/testimonial-home-fashion-women.html
 
 - Output:  
-  Updated banner-collection.liquid with support for the "home-fashion-02" layout.
+  Updated testimonial.liquid with support for the "home-fashion-02" layout.
 
 ---
 
 ## 📋 Conversion Process
 
-### Step 1: Analyze Existing banner-collection.liquid File
+### Step 1: Analyze Existing testimonial.liquid File
 1. Identify the current structure of the file:
    - Common settings used across all layouts
-   - How the file handles switching between different layouts (Home Electronic and Home Bicycle)
+   - How the file handles switching between different layouts (Home Default, Home Electronic and Home Fashion Women)
    - Identify existing blocks and their potential for reuse
 
 2. Identify extension points:
@@ -34,7 +35,7 @@ Extend the existing banner-collection.liquid section to support a new "Home Fash
 
 ### Step 2: Analyze Input HTML to Identify Required Settings
 
-1. Open and study banner-collection-home-fashion-02.html:
+1. Open and study testimonial-home-fashion-02.html:
    - Identify section structure and styling specific to the Fashion 02 layout
    - Note any repeating elements (e.g., multiple category tiles/cards)
    - Detect layout or style differences from the existing layouts
@@ -53,8 +54,9 @@ Extend the existing banner-collection.liquid section to support a new "Home Fash
      "id": "layout",
      "label": "Section Layout",
      "options": [
+       { "value": "default", "label": "Default" },
        { "value": "electronic", "label": "Electronic" },
-       { "value": "bicycle", "label": "Bicycle" },
+       { "value": "fashion-women", "label": "Fashion Women" },
        { "value": "fashion-02", "label": "Fashion 02" }
      ],
      "default": "default"
@@ -62,12 +64,14 @@ Extend the existing banner-collection.liquid section to support a new "Home Fash
 
 ### Step 4: Integrate HTML into Liquid Template
 
-1. Add conditional logic for the fashion 02 layout:
+1. Add conditional logic for the fashion women layout:
    
-   {% if section.settings.layout == "electronic" %}
+   {% if section.settings.layout == "default" %}
+     <!-- Existing default layout code -->
+   {% elsif section.settings.layout == "electronic" %}
      <!-- Existing electronic layout code -->
-   {% elsif section.settings.layout == "bicycle" %}
-     <!-- Existing bicycle layout code -->
+   {% elsif section.settings.layout == "fashion-women" %}
+     <!-- New fashion women layout code -->
    {% elsif section.settings.layout == "fashion-02" %}
      <!-- New fashion 02 layout code -->
    {% endif %}
@@ -75,7 +79,7 @@ Extend the existing banner-collection.liquid section to support a new "Home Fash
 ---
 
 ## 🔍 Important Notes
-- The existing banner-collection.liquid file ALREADY has all the necessary if-else logic to support both Home 1 and Home 2 layouts
+- The existing testimonial.liquid file ALREADY has all the necessary if-else logic to support both Home 1 and Home 2 layouts
 - Only add new style settings if they're specific to the fashion 02 layout and not available in existing settings
 
 ---
@@ -94,7 +98,7 @@ Extend the existing banner-collection.liquid section to support a new "Home Fash
 
 3. Update Settings and Blocks
    - [ ] Add fashion 02 layout to layout options
-   - [ ] Add only necessary style settings specific to fashion 02layout
+   - [ ] Add only necessary style settings specific to fashion 02 layout
    - [ ] Group new settings logically with existing ones
 
 4. Implementation
@@ -106,4 +110,4 @@ Extend the existing banner-collection.liquid section to support a new "Home Fash
    - [ ] Add comments explaining the new fashion 02 layout implementation
    - [ ] Document any new settings or blocks added
 
-By following this guide, you'll extend the existing banner-collection.liquid file to support the new fashion 02 layout while reduced admin overhead. The approach ensures compatibility with current layouts while minimizing changes to the existing file.
+By following this guide, you'll extend the existing testimonial.liquid file to support the new fashion 02 layout while reduced admin overhead. The approach ensures compatibility with current layouts while minimizing changes to the existing file.

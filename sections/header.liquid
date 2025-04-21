@@ -1,0 +1,153 @@
+<!-- Header -->
+<header id="header" class="header-default">
+    <div class="container">
+        <div class="row wrapper-header align-items-center">
+            <div class="col-md-4 col-3 d-xl-none">
+                <a href="#mobileMenu" class="mobile-menu" data-bs-toggle="offcanvas" aria-controls="mobileMenu">
+                    <i class="icon icon-categories1"></i>
+                </a>
+            </div>
+            <div class="col-xl-2 col-md-4 col-6">
+                <a href="{{ routes.root_url }}" class="logo-header">
+                    {% if section.settings.logo != blank %}
+                        <img src="{{ section.settings.logo | img_url: 'master' }}" alt="{{ shop.name }}" class="logo" width="150" height="50">
+                    {% else %}
+                        <span class="logo-text">{{ shop.name }}</span>
+                    {% endif %}
+                </a>
+            </div>
+            <div class="col-xl-8 d-none d-xl-block">
+                <nav class="box-navigation text-center">
+                    <ul class="box-nav-menu">
+                        {% for link in linklists[section.settings.menu].links %}
+                            <li class="menu-item {% if link.links != blank %}has-dropdown{% endif %}">
+                                <a href="{{ link.url }}" class="item-link">
+                                    {{ link.title }}
+                                    {% if link.links != blank %}
+                                        <i class="icon icon-arr-down"></i>
+                                    {% endif %}
+                                </a>
+                                {% if link.links != blank %}
+                                    <div class="sub-menu mega-menu mega-home">
+                                        <div class="box-search">
+                                            <div class="tf-select">
+                                                <select name="pagetype" id="pagetype">
+                                                    <option value="">Page Type</option>
+                                                    {% for child_link in link.links %}
+                                                        <option value="{{ child_link.title | handleize }}">{{ child_link.title }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <form class="form-search" action="{{ routes.search_url }}">
+                                                <input type="text" name="q" placeholder="Search products..." tabindex="0" aria-required="true" required>
+                                                <button type="submit"><i class="icon icon-search"></i></button>
+                                            </form>
+                                        </div>
+                                        <div class="row-demo">
+                                            {% for child_link in link.links %}
+                                                <div class="demo-item">
+                                                    {% if child_link.object.featured_image %}
+                                                        <a href="{{ child_link.url }}" class="demo-image">
+                                                            <img class="lazyload" data-src="{{ child_link.object.featured_image | img_url: 'master' }}" src="{{ child_link.object.featured_image | img_url: 'master' }}" alt="{{ child_link.title }}" width="300" height="200">
+                                                            {% if child_link.object.metafields.custom.new_label %}
+                                                                <div class="demo-label">
+                                                                    <span>New</span>
+                                                                </div>
+                                                            {% endif %}
+                                                        </a>
+                                                    {% endif %}
+                                                    <a href="{{ child_link.url }}" class="demo-name link">{{ child_link.title }}</a>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-xl-2 col-md-4 col-3">
+                <div class="box-right">
+                    <div class="tf-search">
+                        <a href="#" class="icon-search" data-bs-toggle="modal" data-bs-target="#searchModal">
+                            <i class="icon icon-search"></i>
+                        </a>
+                    </div>
+                    <div class="tf-account">
+                        <a href="{{ routes.account_url }}" class="icon-account">
+                            <i class="icon icon-account"></i>
+                        </a>
+                    </div>
+                    <div class="tf-wishlist">
+                        <a href="{{ routes.root_url }}pages/wishlist" class="icon-wishlist">
+                            <i class="icon icon-wishlist"></i>
+                            <span class="wishlist-count">0</span>
+                        </a>
+                    </div>
+                    <div class="tf-cart">
+                        <a href="{{ routes.cart_url }}" class="icon-cart" data-bs-toggle="offcanvas" data-bs-target="#cartSidebar" aria-controls="cartSidebar">
+                            <i class="icon icon-cart"></i>
+                            <span class="cart-count">{{ cart.item_count }}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- /Header -->
+
+{% schema %}
+{
+    "name": "Header",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Logo"
+        },
+        {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Menu",
+            "default": "main-menu"
+        },
+        {
+            "type": "header",
+            "content": "Search Settings"
+        },
+        {
+            "type": "text",
+            "id": "search_placeholder",
+            "label": "Search Placeholder",
+            "default": "Search products..."
+        },
+        {
+            "type": "header",
+            "content": "Cart Settings"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_cart_count",
+            "label": "Show Cart Count",
+            "default": true
+        },
+        {
+            "type": "header",
+            "content": "Wishlist Settings"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_wishlist",
+            "label": "Show Wishlist",
+            "default": true
+        }
+    ],
+    "presets": [
+        {
+            "name": "Header"
+        }
+    ]
+}
+{% endschema %} 

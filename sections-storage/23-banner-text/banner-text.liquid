@@ -1,75 +1,157 @@
 <!-- Banner with text-->
-<div class="s-banner-product">
-    <div class="container">
-        <div class="content-banner">
-            <div class="image-wrap hover-img">
-                <a href="{{ section.settings.banner_link }}" class="image img-style d-block">
-                    <img src="{{ section.settings.banner_image | image_url: 'master' }}"
-                         data-src="{{ section.settings.banner_image | image_url: 'master' }}"
-                         alt="{{ section.settings.banner_image.alt | escape }}"
-                         class="lazyload"
-                         width="1170"
-                         height="600">
-                </a>
-                {% if section.settings.featured_product != blank %}
-                    {% assign product = all_products[section.settings.featured_product] %}
-                    <div class="loobook-product style-row">
-                        <div class="img-style">
-                            <img src="{{ product.featured_image | image_url: 'medium' }}"
-                                 alt="{{ product.featured_image.alt | escape }}"
-                                 width="100"
-                                 height="100">
-                        </div>
-                        <div class="content">
-                            <div class="info">
-                                <a href="{{ product.url }}" class="text-md fw-medium text-line-clamp-1 link">
-                                    {{ product.title }}
-                                </a>
-                                <p class="price-wrap text-md fw-medium">
-                                    {{ product.price | money }}
-                                </p>
-                            </div>
-                            <a href="#" class="btn-lookbook hover-tooltip js-quick-view" data-product-handle="{{ product.handle }}">
-                                <i class="icon-view"></i>
-                                <span class="tooltip">{{ 'products.product.quick_view' | t }}</span>
-                            </a>
-                        </div>
-                    </div>
-                {% endif %}
+<div class="{% if section.settings.layout == 'home-fashion-02' %}s-banner-with-text banner-text-fashion flat-spacing-3 pt-0{% else %}s-banner-product{% endif %}">
+  <div class="container">
+    {% if section.settings.layout == 'home-fashion-02' %}
+      <div class="row flex-wrap-reverse">
+        <div class="col-md-5">
+          <div class="content-banner type-left wow fadeInUp">
+            <div class="box-title-banner">
+              <h4>{{ section.settings.title }}</h4>
+              <p class="text-md text-main">
+                {{ section.settings.description }}
+              </p>
             </div>
-
-            <div class="content-right text-center wow fadeInUp">
-                <div class="box-title">
-                    <p class="display-lg-3 font-2 text-dark-3">
-                        {{ section.settings.heading }}
-                    </p>
-                    <p class="body-text-2 text-dark-3 font-2">
-                        {{ section.settings.subtext }}
-                    </p>
-                </div>
-                {% if section.settings.button_label != blank %}
-                    <div class="box-btn">
-                        <a href="{{ section.settings.button_link }}" class="tf-btn animate-btn btn-dark2">
-                            {{ section.settings.button_label }}
-                            <i class="icon-arr-right"></i>
-                        </a>
-                    </div>
-                {% endif %}
+            <div class="box-btn-banner">
+              <a href="{{ section.settings.button_link }}" class="tf-btn animate-btn">
+                {{ section.settings.button_text }}
+              </a>
             </div>
+          </div>
         </div>
-    </div>
+        <div class="col-md-7">
+          <div class="image-banner">
+            <div class="image image-2 hover-shine hover-img">
+              <div class="shine-item img-style wow fadeInRight" data-wow-delay="0.1s">
+                {% if section.settings.image_2 != blank %}
+                  {{ section.settings.image_2 | image_url: width: 2000 | image_tag:
+                    loading: 'lazy',
+                    class: 'lazyload',
+                    alt: section.settings.image_2.alt,
+                    width: section.settings.image_2.width,
+                    height: section.settings.image_2.height
+                  }}
+                {% endif %}
+              </div>
+            </div>
+            <div class="image image-1 hover-shine hover-img">
+              <div class="shine-item img-style wow fadeInRight">
+                {% if section.settings.image_1 != blank %}
+                  {{ section.settings.image_1 | image_url: width: 2000 | image_tag:
+                    loading: 'lazy',
+                    class: 'lazyload',
+                    alt: section.settings.image_1.alt,
+                    width: section.settings.image_1.width,
+                    height: section.settings.image_1.height
+                  }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% else %}
+    <div class="content-banner">
+      <div class="image-wrap hover-img">
+        {% if section.settings.banner_product != blank %}
+          {% assign banner_product = section.settings.banner_product %}
+          <a href="{{ banner_product.url }}" class="image img-style d-block">
+            {% if banner_product.featured_image != blank %}
+              {{ banner_product.featured_image | image_url: width: 2000 | image_tag:
+                loading: 'lazy',
+                class: 'lazyload',
+                alt: banner_product.featured_image.alt
+              }}
+            {% endif %}
+          </a>
+        {% else %}
+          <a href="{{ section.settings.banner_link }}" class="image img-style d-block">
+            {% if section.settings.banner_image != blank %}
+              {{ section.settings.banner_image | image_url: width: 2000 | image_tag:
+                loading: 'lazy',
+                class: 'lazyload',
+                alt: section.settings.banner_image.alt
+              }}
+            {% endif %}
+          </a>
+        {% endif %}
+        {% for block in section.blocks %}
+          {% if block.type == 'lookbook' %}
+            {% assign product = block.settings.product %}
+            {% if product != blank %}
+              <div class="loobook-product style-row">
+                <div class="img-style">
+                  {% if product.featured_image != blank %}
+                    {{ product.featured_image | image_url: width: 200 | image_tag:
+                      loading: 'lazy',
+                      alt: product.featured_image.alt
+                    }}
+                  {% endif %}
+                </div>
+                <div class="content">
+                  <div class="info">
+                    <a href="{{ product.url }}" class="text-md fw-medium text-line-clamp-1 link">
+                      {{ product.title }}
+                    </a>
+                    <p class="price-wrap text-md fw-medium">
+                      {{ product.price | money }}
+                    </p>
+                  </div>
+                  <a href="#quickView" data-bs-toggle="modal" class="btn-lookbook hover-tooltip" data-product-handle="{{ product.handle }}">
+                    <i class="icon-view"></i>
+                    <span class="tooltip">Quick view</span>
+                  </a>
+                </div>
+              </div>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </div>
+
+        <div class="content-right text-center wow fadeInUp">
+          <div class="box-title">
+            <p class="display-lg-3 font-2 text-dark-3">
+              {{ section.settings.title }}
+            </p>
+            <p class="body-text-2 text-dark-3 font-2">
+              {{ section.settings.description }}
+            </p>
+          </div>
+          <div class="box-btn">
+            <a href="{{ section.settings.button_link }}" class="tf-btn animate-btn btn-dark2">
+              {{ section.settings.button_text }}
+              <i class="icon-arr-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
 </div>
 <!-- /Banner with text -->
 
 {% schema %}
 {
-  "name": "Banner with Text",
+  "name": "Banner Text Fashion Women",
   "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Section Layout",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "home-fashion-02", "label": "Home Fashion 02 (Banner Text)" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "product",
+      "id": "banner_product",
+      "label": "Banner Product"
+    },
     {
       "type": "image_picker",
       "id": "banner_image",
-      "label": "Banner Image",
-      "info": "1170 x 600px recommended"
+      "label": "Banner Image (Fallback)"
     },
     {
       "type": "url",
@@ -77,65 +159,57 @@
       "label": "Banner Link"
     },
     {
-      "type": "product",
-      "id": "featured_product",
-      "label": "Featured Product"
-    },
-    {
-      "type": "header",
-      "content": "Content"
-    },
-    {
       "type": "text",
-      "id": "heading",
-      "label": "Heading",
+      "id": "title",
+      "label": "Title",
       "default": "Elevating Your Style Journey"
     },
     {
-      "type": "textarea",
-      "id": "subtext",
-      "label": "Subtext",
+      "type": "text",
+      "id": "description",
+      "label": "Description",
       "default": "Discover timeless pieces that define elegance and sophistication."
     },
     {
       "type": "text",
-      "id": "button_label",
-      "label": "Button Label",
+      "id": "button_text",
+      "label": "Button Text",
       "default": "Shop Now"
     },
     {
       "type": "url",
       "id": "button_link",
       "label": "Button Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "First Image (Home Fashion 02)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Second Image (Home Fashion 02)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "lookbook",
+      "name": "Lookbook Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Banner with Text",
-      "category": "Image",
-      "settings": {
-        "heading": "Elevating Your Style Journey",
-        "subtext": "Discover timeless pieces that define elegance and sophistication.",
-        "button_label": "Shop Now"
-      }
+      "name": "Banner Text Fashion Women",
+      "blocks": []
     }
   ]
 }
-{% endschema %}
-
-{% stylesheet %}
-{% endstylesheet %}
-
-{% javascript %}
-document.addEventListener('DOMContentLoaded', function() {
-    const quickViewButtons = document.querySelectorAll('.js-quick-view');
-    
-    quickViewButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const productHandle = this.dataset.productHandle;
-            // Add your quick view logic here
-        });
-    });
-});
-{% endjavascript %} 
+{% endschema %} 
