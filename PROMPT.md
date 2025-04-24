@@ -1,21 +1,21 @@
-# 🧩 Latest tip Conversion Guide: Home Bicycle to Shopify Liquid
+# 🧩 Banner countdown Conversion Guide: Home Phonecase to Shopify Liquid
 
 ## 🎯 Objective
-Convert `vineta/latest-tip-home-bicycle.html` into a highly customizable Shopify Liquid section. The goal is to **reuse the existing section** by adding a new layout to support the "home-bicycle" version that displays **latest tip**.
+Convert `vineta/banner-countdown-home-phonecase.html` into a highly customizable Shopify Liquid section. The goal is to **reuse the existing section** by adding a new layout to support the "home-phonecase" version that displays **banner countdown**.
 
 ---
 
 ## 📥 Input & Output
 
 - **Input HTML**:  
-  `/home/ryotaru/Shopify-theme2/vineta/latest-tip-home-bicycle.html`  
-  (latest tip section from the "Home Bicycle" page)
+  `/home/ryotaru/Shopify-theme2/vineta/banner-countdown-home-phonecase.html`  
+  (Banner countdown section from the "Home Phonecase" page)
 
 - **Existing Component**:  
-  `sections-storage/18-latest-tip/latest-tip.liquid`
+  `sections-storage/06-banner-countdown/banner-countdown.liquid`
 
 - **Output**:  
-  Updated section (e.g., `latest-tip.liquid`) with support for the `"home-bicycle` layout using dynamic settings and/or blocks.  
+  Updated section (e.g., `banner-countdown.liquid`) with support for the `"home-phonecase` layout using dynamic settings and/or blocks.  
 
 ---
 
@@ -23,7 +23,7 @@ Convert `vineta/latest-tip-home-bicycle.html` into a highly customizable Shopify
 
 ### Step 1: Analyze Input HTML
 
-1. Open and study `latest-tip-home-bicycle.html`:
+1. Open and study `banner-countdown-home-phonecase.html`:
    - Identify dynamic text (e.g., headings, labels)
    - Extract customizable icons (could be image, SVG, or class name) and links
    - Determine visual differences in layout (e.g., spacing, shape, alignment)
@@ -50,9 +50,9 @@ If this layout differs from default:
      "label": "Section Layout",
      "options": [
        { "value": "default", "label": "Default" },
-       { "value": "home-bicycle", "label": "Home Bicycle (Latest tip)" }
+       { "value": "home-phonecase", "label": "Home Phonecase (Banner countdown)" }
      ],
-     "default": "home-bicycle"
+     "default": "home-phonecase"
    }
 
 
@@ -103,7 +103,7 @@ If this layout differs from default:
 ### Step 4: Compare with Existing Header
 1. Compare settings from current header (home1) with newly identified settings:
    - Retain existing settings needed for default layout
-   - Add new settings for bicycle layout
+   - Add new settings for phonecase layout
    - Create common settings for both layouts where possible
 
 ## 🔍 Comprehensive Checklist
@@ -112,7 +112,7 @@ If this layout differs from default:
    - [ ] List all dynamic text to convert to settings
    - [ ] Identify all images requiring customization
    - [ ] Identify repeating elements (menus, announcements, etc.)
-   - [ ] Identify special features of the bicycle header
+   - [ ] Identify special features of the phonecase header
 
 2. Create Settings
    - [ ] Group settings by function
@@ -133,7 +133,7 @@ If this layout differs from default:
 5. Testing and Documentation
    - [ ] Verify all settings work correctly
    - [ ] Update README with list of new settings
-   - [ ] Describe how to use the bicycle layout
+   - [ ] Describe how to use the phonecase layout
 
 ## ✅ Notes
 - Extract all text from HTML to create meaningful settings

@@ -10,7 +10,8 @@
                 { "value": "default", "label": "Default" },
                 { "value": "home-electronic", "label": "Home Electronic" },
                 { "value": "home-fashion-women", "label": "Home Fashion Women" },
-                { "value": "home-fashion-02", "label": "Home Fashion 02" }
+                { "value": "home-fashion-02", "label": "Home Fashion 02" },
+                { "value": "home-phonecase", "label": "Home Phonecase" }
             ],
             "default": "default"
         },
@@ -19,6 +20,12 @@
             "id": "title",
             "label": "Section Title",
             "default": "Happy Customers"
+        },
+        {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Section Subtitle",
+            "default": "Experience with our products"
         }
     ],
     "blocks": [
@@ -92,15 +99,85 @@
 {% endschema %}
 
 <!-- Testimonial Section -->
-<section class="tf-testimonial {% if section.settings.layout == 'home-electronic' %}flat-spacing-2 pb-0{% elsif section.settings.layout == 'home-fashion-women' %}flat-spacing-3{% elsif section.settings.layout == 'home-fashion-02' %}flat-spacing-3{% endif %}">
-    <div class="container">
+<section class="tf-testimonial {% if section.settings.layout == 'home-electronic' %}flat-spacing-2 pb-0{% elsif section.settings.layout == 'home-fashion-women' %}flat-spacing-3{% elsif section.settings.layout == 'home-fashion-02' %}flat-spacing-3{% elsif section.settings.layout == 'home-phonecase' %}bg-white mx_40 radius-16 flat-spacing-2{% endif %}">
+    <div class="{% if section.settings.layout == 'home-phonecase' %}container-5{% else %}container{% endif %}">
         {% if section.settings.layout != 'home-fashion-women' %}
-            <div class="flat-title {% if section.settings.layout == 'home-electronic' %}text-start{% endif %} wow fadeInUp">
+            <div class="flat-title {% if section.settings.layout == 'home-electronic' %}text-start{% elsif section.settings.layout == 'home-phonecase' %}gap-10{% endif %} wow fadeInUp">
+                {% if section.settings.layout == 'home-phonecase' %}
+                    <p class="desc text-md">{{ section.settings.subtitle }}</p>
+                {% endif %}
                 <h4 class="title">{{ section.settings.title }}</h4>
             </div>
         {% endif %}
 
-        {% if section.settings.layout == 'home-fashion-women' %}
+        {% if section.settings.layout == 'home-phonecase' %}
+            <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+                "slidesPerView": 1,
+                "spaceBetween": 12,
+                "speed": 800,
+                "observer": true,
+                "observeParents": true,
+                "slidesPerGroup": 1,
+                "pagination": { "el": ".sw-pagination-tes", "clickable": true },
+                "breakpoints": {
+                    "768": { "slidesPerView": 2, "spaceBetween": 24, "slidesPerGroup": 2 },
+                    "1200": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3}
+                }
+            }'>
+                <div class="swiper-wrapper wow fadeInUp">
+                    {% for block in section.blocks %}
+                        <div class="swiper-slide" {{ block.shopify_attributes }}>
+                            <div class="wg-testimonial">
+                                <div class="content">
+                                    <div class="content-top">
+                                        <div class="box-author">
+                                            <p class="name-author text-sm fw-medium">{{ block.settings.name }}</p>
+                                            <div class="box-verified text-main">
+                                                <i class="icon-verifi"></i>
+                                                <p class="text-xs fst-italic">Verified Buyer</p>
+                                            </div>
+                                        </div>
+                                        <div class="list-star-default">
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                        </div>
+                                        <p class="text-review text-sm text-main">{{ block.settings.review }}</p>
+                                    </div>
+                                    <span class="br-line d-block"></span>
+                                    <div class="box-avt">
+                                        <div class="avatar">
+                                            {% if block.settings.image != blank %}
+                                                <img src="{{ block.settings.image | img_url: '120x120' }}" 
+                                                     alt="{{ block.settings.name }}" 
+                                                     width="60" 
+                                                     height="60">
+                                            {% else %}
+                                                <img src="{{ 'author-fs1.jpg' | asset_url }}" 
+                                                     alt="{{ block.settings.name }}" 
+                                                     width="60" 
+                                                     height="60">
+                                            {% endif %}
+                                        </div>
+                                        <div class="box-price">
+                                            <p class="name-item text-xs">
+                                                <a href="{{ block.settings.product_url }}" class="text-line-clamp-2">Item purchased:
+                                                    <span class="fw-medium text-sm link">{{ block.settings.product }}</span>
+                                                </a>
+                                            </p>
+                                            <p class="price text-md fw-medium">{{ block.settings.price }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="sw-pagination-tes"></div>
+            </div>
+        {% elsif section.settings.layout == 'home-fashion-women' %}
             <div class="wrapper-thumbs-tes-2 flat-thumbs-tes">
                 <div class="box-left">
                     <div dir="ltr" class="swiper tf-tes-main" data-space-lg="24" data-space="12">

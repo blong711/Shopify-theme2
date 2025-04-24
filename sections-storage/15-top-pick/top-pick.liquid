@@ -2,15 +2,20 @@
 {% assign section_bg = section.settings.background_color | default: 'bg-surface' %}
 {% assign layout = section.settings.layout | default: 'default' %}
 
-<section class="{{ section_spacing }} {{ section_bg }}">
-    <div class="container">
-        <div class="flat-title {% if layout == 'default' %}style-between align-items-end{% endif %} wow fadeInUp">
-            <div class="box-title">
+<section class="{{ section_spacing }} {{ section_bg }} {% if layout == 'home-phonecase' %}mx_40 radius-16{% endif %}">
+    <div class="{% if layout == 'home-phonecase' %}container-3{% else %}container{% endif %}">
+        <div class="flat-title {% if layout == 'default' %}style-between align-items-end{% elsif layout == 'home-phonecase' %}style-2{% endif %} wow fadeInUp">
+            {% if layout == 'home-phonecase' %}
+                <p class="text-md fw-medium text-uppercase text-primary">{{ section.settings.subtitle }}</p>
                 <h4 class="title">{{ section.settings.title }}</h4>
-                <p class="desc text-main text-md">{{ section.settings.description }}</p>
-            </div>
-            {% if section.settings.show_view_all and layout == 'default' %}
-                <a href="{{ section.settings.view_all_link }}" class="btn-underline">{{ section.settings.view_all_text }}</a>
+            {% else %}
+                <div class="box-title">
+                    <h4 class="title">{{ section.settings.title }}</h4>
+                    <p class="desc text-main text-md">{{ section.settings.description }}</p>
+                </div>
+                {% if section.settings.show_view_all and layout == 'default' %}
+                    <a href="{{ section.settings.view_all_link }}" class="btn-underline">{{ section.settings.view_all_text }}</a>
+                {% endif %}
             {% endif %}
         </div>
         <div class="fl-control-sw">
@@ -20,16 +25,22 @@
                     "speed": 800,
                     "observer": true,
                     "observeParents": true,
-                    "slidesPerGroup": 2,
+                    "slidesPerGroup": {% if layout == 'home-phonecase' %}1{% else %}2{% endif %},
+                    {% if layout != 'home-phonecase' %}
                     "navigation": {
                         "clickable": true,
                         "nextEl": ".nav-next-top-pick",
                         "prevEl": ".nav-prev-top-pick"
                     },
-                    "pagination": { "el": ".sw-pagination-top-pick", "clickable": true },
+                    {% endif %}
+                    "pagination": { 
+                        "el": ".sw-pagination-top-pick", 
+                        "clickable": true{% if layout == 'home-phonecase' %}, 
+                        "type": "progressbar"{% endif %} 
+                    },
                     "breakpoints": {
-                    "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
-                    "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4}
+                    "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": {% if layout == 'home-phonecase' %}1{% else %}3{% endif %} },
+                    "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": {% if layout == 'home-phonecase' %}1{% else %}4{% endif %} }
                     }
                 }'>
                 <div class="swiper-wrapper wow fadeInUp">
@@ -37,8 +48,8 @@
                         {% if block.type == 'product' %}
                             {% assign product = all_products[block.settings.product] %}
                             <div class="swiper-slide" {{ block.shopify_attributes }}>
-                                <div class="card-product {% if layout == 'home-fashion-02' %}style-2{% else %}style-center{% endif %} {% if block.settings.show_size_swatches %}card-product-size{% endif %}">
-                                    <div class="card-product-wrapper">
+                                <div class="card-product {% if layout == 'home-fashion-02' %}style-2{% elsif layout == 'home-phonecase' %}style-4{% else %}style-center{% endif %} {% if block.settings.show_size_swatches %}card-product-size{% endif %}">
+                                    <div class="card-product-wrapper {% if layout == 'home-phonecase' %}radius-16 line-2 asp-ratio-0{% endif %}">
                                         <a href="{{ product.url }}" class="product-img">
                                             <img class="img-product lazyload" 
                                                 data-src="{{ product.featured_image | image_url }}"
@@ -104,7 +115,7 @@
                                             </div>
                                         {% endif %}
                                     </div>
-                                    <div class="card-product-info {% if layout == 'default' %}text-center{% endif %}">
+                                    <div class="card-product-info {% if layout == 'default' or layout == 'home-phonecase' %}text-center{% endif %}">
                                         <a href="{{ product.url }}" class="name-product link fw-medium text-md">
                                             {{ product.title }}
                                         </a>
@@ -117,7 +128,7 @@
                                             {% endif %}
                                         </p>
                                         {% if block.settings.show_color_swatches and product.options contains 'Color' %}
-                                            <ul class="list-color-product {% if layout == 'default' %}justify-content-center{% endif %}">
+                                            <ul class="list-color-product {% if layout == 'default' or layout == 'home-phonecase' %}justify-content-center{% endif %} {% if layout == 'home-phonecase' %}list-capacity-product{% endif %}">
                                                 {% for variant in product.variants %}
                                                     {% if variant.option1 contains 'Color' %}
                                                         <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %} {% if variant.option1 contains 'White' %}line{% endif %}">
@@ -140,10 +151,12 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <div class="d-flex d-xl-none sw-dot-default sw-pagination-top-pick justify-content-center"></div>
-            </div>
+                <div class="sw-pagination-top-pick position-relative"></div>
+                </div>
+            {% if layout != 'home-phonecase' %}
             <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-top-pick"></div>
             <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-top-pick"></div>
+            {% endif %}
         </div>
     </div>
 </section>
@@ -164,9 +177,19 @@
                 {
                     "value": "home-fashion-02",
                     "label": "Home Fashion 02"
+                },
+                {
+                    "value": "home-phonecase",
+                    "label": "Home Phonecase"
                 }
             ],
             "default": "default"
+        },
+        {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Section Subtitle",
+            "default": "Discover our top picks"
         },
         {
             "type": "text",
@@ -254,7 +277,7 @@
                     "type": "text",
                     "id": "sale_badge_text",
                     "label": "Sale Badge Text",
-                    "default": "20% Off"
+                    "default": "Sale"
                 },
                 {
                     "type": "checkbox",
@@ -272,11 +295,7 @@
                     "type": "checkbox",
                     "id": "show_color_swatches",
                     "label": "Show Color Swatches",
-                    "default": false
-                },
-                {
-                    "type": "header",
-                    "content": "Home Fashion 02 Settings"
+                    "default": true
                 },
                 {
                     "type": "checkbox",
@@ -288,7 +307,8 @@
                     "type": "text",
                     "id": "size_swatches",
                     "label": "Size Swatches",
-                    "info": "Comma separated list of sizes (e.g. XS,S,M,L,XL)"
+                    "info": "Comma-separated list of sizes",
+                    "default": "S,M,L,XL"
                 },
                 {
                     "type": "checkbox",
@@ -299,8 +319,9 @@
                 {
                     "type": "text",
                     "id": "countdown_timer",
-                    "label": "Countdown Timer (in seconds)",
-                    "default": "86400"
+                    "label": "Countdown Timer",
+                    "info": "Format: YYYY/MM/DD HH:MM:SS",
+                    "default": "2024/12/31 23:59:59"
                 }
             ]
         }

@@ -44,6 +44,71 @@
         </div>
         <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls justify-content-center"></div>
     </div>
+{% elsif section.settings.layout == 'home-phonecase' %}
+    <div class="mx_40 my_24">
+        <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+                "slidesPerView": 1,
+                "spaceBetween": 12,
+                "speed": {{ section.settings.speed }},
+                "observer": true,
+                "observeParents": true,
+                "slidesPerGroup": 1,
+                "navigation": {
+                    "clickable": true,
+                    "nextEl": ".nav-next-cls",
+                    "prevEl": ".nav-prev-cls"
+                },
+                "pagination": { "el": ".sw-pagination-cls", "clickable": true },
+                "breakpoints": {
+                "768": { "slidesPerView": 1, "spaceBetween": 12, "slidesPerGroup": 2 },
+                "1024": { "slidesPerView": 2, "spaceBetween": 24, "slidesPerGroup": 2}
+                }
+            }'>
+            <div class="swiper-wrapper">
+                {% for block in section.blocks %}
+                    {% assign collection = collections[block.settings.collection] %}
+                    <div class="swiper-slide" {{ block.shopify_attributes }}>
+                        <div class="banner-shop hover-img style-left-center">
+                            {% if collection.featured_image != blank %}
+                                <a href="{{ collection.url }}" class="img-style d-block">
+                                    <img src="{{ collection.featured_image | img_url: 'master' }}"
+                                        data-src="{{ collection.featured_image | img_url: 'master' }}" 
+                                        alt="{{ collection.title | escape }}" 
+                                        class="lazyload"
+                                        width="{{ collection.featured_image.width }}"
+                                        height="{{ collection.featured_image.height }}">
+                                </a>
+                            {% endif %}
+                            <div class="content">
+                                <div class="box-title wow fadeInUp">
+                                    {% if block.settings.tag != blank %}
+                                        <span class="tag text-sm text-white animate-btn">{{ block.settings.tag }}</span>
+                                    {% endif %}
+                                    <a href="{{ collection.url }}" class="title link">{{ collection.title }}</a>
+                                    {% if block.settings.price_new != blank or block.settings.price_old != blank %}
+                                        <div class="box-price">
+                                            {% if block.settings.price_new != blank %}
+                                                <span class="price-new display-xs fw-medium text-primary">{{ block.settings.price_new }}</span>
+                                            {% endif %}
+                                            {% if block.settings.price_old != blank %}
+                                                <span class="price-old">{{ block.settings.price_old }}</span>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <a href="{{ collection.url }}"
+                                    class="wow fadeInUp tf-btn btn-cls btn-out-line-dark hover-icon-2">
+                                    {{ block.settings.button_text | default: 'See Details' }}
+                                    <i class="icon icon-arrow-top-left"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="d-flex d-lg-none sw-dot-default sw-pagination-cls justify-content-center"></div>
+        </div>
+    </div>
 {% else %}
     <div class="pt-24">
         <div class="container">
@@ -111,7 +176,8 @@
             "label": "Section Layout",
             "options": [
                 { "value": "default", "label": "Default" },
-                { "value": "home-fashion-women", "label": "Home Fashion Women (Collection)" }
+                { "value": "home-fashion-women", "label": "Home Fashion Women (Collection)" },
+                { "value": "home-phonecase", "label": "Home Phonecase (Collection)" }
             ],
             "default": "default"
         },
@@ -135,6 +201,31 @@
                     "type": "collection",
                     "id": "collection",
                     "label": "Collection"
+                },
+                {
+                    "type": "text",
+                    "id": "tag",
+                    "label": "Tag Text",
+                    "info": "Optional tag text (e.g., 'Sale 50% OFF')"
+                },
+                {
+                    "type": "text",
+                    "id": "price_new",
+                    "label": "New Price",
+                    "info": "Optional new price (e.g., '$130.00')"
+                },
+                {
+                    "type": "text",
+                    "id": "price_old",
+                    "label": "Old Price",
+                    "info": "Optional old price (e.g., '$150.00')"
+                },
+                {
+                    "type": "text",
+                    "id": "button_text",
+                    "label": "Button Text",
+                    "default": "See Details",
+                    "info": "Text for the call-to-action button"
                 }
             ]
         }
@@ -188,6 +279,34 @@
                     "type": "collection",
                     "settings": {
                         "collection": ""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Home Phonecase Collection",
+            "settings": {
+                "layout": "home-phonecase"
+            },
+            "blocks": [
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": "",
+                        "tag": "Sale 50% OFF",
+                        "price_new": "$130.00",
+                        "price_old": "$150.00",
+                        "button_text": "See Details"
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": "",
+                        "tag": "Sale 50% OFF",
+                        "price_new": "$100.00",
+                        "price_old": "$130.00",
+                        "button_text": "See Details"
                     }
                 }
             ]

@@ -1,0 +1,89 @@
+<!-- Grid Collection -->
+<div class="flat-spacing-3">
+    <div class="container">
+        <div class="grid-cls grid-cls-v5 wow fadeInUp">
+            {% for block in section.blocks %}
+                <div class="item{{ forloop.index }} wg-cls rounded-0 style-abs type-2 hover-img">
+                    <a href="{{ block.settings.link }}" class="image img-style d-block">
+                        <img src="{{ block.settings.image | image_url: width: 600 }}"
+                            data-src="{{ block.settings.image | image_url: width: 600 }}" 
+                            alt="{{ block.settings.title }}"
+                            width="600"
+                            height="400"
+                            class="lazyloaded">
+                    </a>
+                    <div class="cls-btn text-center">
+                        <a href="{{ block.settings.link }}"
+                            class="tf-btn btn-cls rounded-0 hover-dark btn-white hover-icon-2">
+                            {{ block.settings.title }}
+                            <i class="icon icon-arrow1-top-left"></i>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- /Grid Collection -->
+
+{% schema %}
+{
+    "name": "Grid Collection",
+    "settings": [],
+    "blocks": [
+        {
+            "type": "collection_item",
+            "name": "Collection Item",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Collection Title"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Link"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Grid Collection",
+            "blocks": [
+                {
+                    "type": "collection_item",
+                    "settings": {
+                        "title": "Couple T-Shirt"
+                    }
+                },
+                {
+                    "type": "collection_item",
+                    "settings": {
+                        "title": "Summer Vibe"
+                    }
+                },
+                {
+                    "type": "collection_item",
+                    "settings": {
+                        "title": "Personalize Hat"
+                    }
+                },
+                {
+                    "type": "collection_item",
+                    "settings": {
+                        "title": "Gifts"
+                    }
+                }
+            ]
+        }
+    ]
+}
+{% endschema %} 
